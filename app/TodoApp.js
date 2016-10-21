@@ -36,6 +36,7 @@ export default class TodoApp extends Component {
                         case 'edit-item': return (
                             <EditItemScene
                                 item={ route.item }
+                                itemId={ route.itemId }
                                 changeItem={ this.changeItem }
                                 navigator={ navigator }
                             />

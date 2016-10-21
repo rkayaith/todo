@@ -1,18 +1,30 @@
-import React from 'react'
-import { View, Text } from 'react-native'
-import { ToolbarAndroid } from 'react-native-vector-icons/MaterialIcons'
+import React, { Component } from 'react'
+import { View } from 'react-native'
+
+import ItemEditor from '../common/ItemEditor'
 
 import styles from '../styles'
 import { Toolbar } from '../components'
 
-export default EditItemScene = (props) => (
-	<View style={ styles.scene }>
-		<Toolbar
-			title="Edit Item"
-			navIconName="arrow-back"
-			onIconClicked={ props.navigator.pop }
-		/>
-		<Text>Edit Item Scene</Text>
-		<Text>Item: { JSON.stringify(props.item) }</Text>
-	</View>
-)
+export default class EditItemScene extends Component {
+	render() {
+		return (
+			<View style={ styles.scene }>
+				<Toolbar
+					title="Edit Item"
+					navIconName="arrow-back"
+					onIconClicked={ this.props.navigator.pop }
+				/>
+				<ItemEditor
+					item={ this.props.item }
+					submit={ this.submit }
+				/>
+			</View>
+		)
+	}
+
+	submit = (item) => {
+		this.props.changeItem(this.props.itemId, item)
+		this.props.navigator.pop()
+	}
+}
