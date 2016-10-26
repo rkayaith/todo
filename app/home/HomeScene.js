@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View } from 'react-native'
+import { View, Text } from 'react-native'
 
 import styles, { colors } from '../styles'
 import { Toolbar } from '../components'
@@ -23,6 +23,7 @@ export default class HomeScene extends Component {
 					goToEditItem={ this.goToEditItem }
 				/>
 				<AddItemButton goToAddItem={ this.goToAddItem } />
+				<Text onPress={ this.props.resetData }>Load mock data</Text>
 			</View>
 		)
 	}

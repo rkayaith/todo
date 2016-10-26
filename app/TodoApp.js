@@ -1,15 +1,29 @@
 import React, { Component } from 'react'
 import { Navigator } from 'react-native'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, AsyncStorage, StyleSheet } from 'react-native'
 
 import HomeScene from './home/HomeScene'
 import AddItemScene from './add-item/AddItemScene'
 import EditItemScene from './edit-item/EditItemScene'
 
-import data from './MOCK_DATA'
+import mock_data from './MOCK_DATA'
 
 export default class TodoApp extends Component {
-    state = { data }
+    state = { data: [] }
+
+    componentDidMount() {
+        this.getStoredData()
+    }
+
+    componentWillUpdate(props, state) {
+        if (state.data !== this.state.data) {
+            // TODO: Throttle storage attempts? TodoItem text input repeatedly calls
+            // this.changeItem() and updates state
+            // Either use Rx.Observable.audit or reduce this.changeItem() calls
+            // (use onEndEditing and onSubmitEditing in TodoItem)
+            this.setStoredData(state.data)
+        }
+    }
 
     render() {
 
@@ -24,6 +38,7 @@ export default class TodoApp extends Component {
                                 data={ this.state.data }
                                 changeItem={ this.changeItem }
                                 deleteItem={ this.deleteItem }
+                                resetData= { this.resetData }
                                 navigator={ navigator }
                             />
                         )
@@ -49,6 +64,19 @@ export default class TodoApp extends Component {
         )
     }
 
+    getStoredData = async () => {
+        let data = JSON.parse(await AsyncStorage.getItem('data'))
+        if (data) {
+            console.log('TodoApp.getStoredData: got data from storage')
+            this.setState({ data })
+        }
+    }
+
+    setStoredData = async (data) => {
+        await AsyncStorage.setItem('data', JSON.stringify(data))
+        console.log("TodoApp.setStoredData: set data in storage")
+    }
+
     addItem = (item) => {
         let data = this.state.data.slice(0)
         data.push(item)
@@ -65,6 +93,10 @@ export default class TodoApp extends Component {
         let data = this.state.data.slice(0)
         data.splice(id, 1)
         this.setState({ data })
+    }
+
+    resetData = () => {
+        this.setState({ data: mock_data })
     }
 }
 
