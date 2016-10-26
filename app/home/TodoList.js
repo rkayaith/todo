@@ -26,6 +26,7 @@ export default class TodoList extends Component {
 				<ListView
 					dataSource={ this.state.ds }
 					renderRow={ this.renderRow }
+					enableEmptySections={ true }
 					// renderSectionHeader={ (sectionData, sectionId) => <Text>{sectionId}</Text>}
 				/>
 			</View>
