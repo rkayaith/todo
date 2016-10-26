@@ -1,25 +1,5 @@
 import { StyleSheet } from 'react-native'
 
-export default styles = StyleSheet.create(style)
-// import this object to combine certain style properties
-export const style = {
-	scene: {
-		flex: 1,
-		backgroundColor: colors.grey50,
-	},
-	toolbar: {
-		height: 56,
-		backgroundColor: colors.grey100,
-	},
-	text: {
-		fontSize: 20,
-	},
-}
-
-export const colors = {
-	...md_colors,
-	primaryColor: md_colors.indigo500
-}
 // material design colors
 const md_colors = {
 	"red50": "#ffebee",
@@ -295,3 +275,25 @@ const md_colors = {
     "bluegrey800": "#37474f",
     "bluegrey900": "#263238",
 }
+
+export const colors = {
+	...md_colors,
+	primaryColor: md_colors.indigo500
+}
+
+// import this object to combine certain style properties
+export const style = {
+	scene: {
+		flex: 1,
+		backgroundColor: colors.grey50,
+	},
+	toolbar: {
+		height: 56,
+		backgroundColor: colors.grey100,
+	},
+	text: {
+		fontSize: 20,
+	},
+}
+
+export default styles = StyleSheet.create(style)
