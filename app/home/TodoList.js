@@ -33,35 +33,38 @@ export default class TodoList extends Component {
 	}
 
 	sortData = (data) => {
-		return data.sort((a, b) => {
-			if (a.checked && !b.checked) return -1
-			if (!a.checked && b.checked) return 1
-			return 0
-		}).reduce( (data, item, id) => {
-			if (item.urgent) {
-				if (item.important) {
-					data['u-i'][id] = item
+		// the id of an item is it's index in the data array
+		return data.map((item, index) => ({ item, id: index }))
+			.sort((a, b) => {
+				if (a.item.checked && !b.item.checked) return -1
+				if (!a.item.checked && b.item.checked) return 1
+				return 0
+			})
+			.reduce( (data, { item, id }) => {
+				if (item.urgent) {
+					if (item.important) {
+						data['u-i'].push({ item, id })
+					} else {
+						data['u-!i'].push({ item, id })
+					}
 				} else {
-					data['u-!i'][id] = item
+					if (item.important) {
+						data['!u-i'].push({ item, id })
+					} else {
+						data['!u-!i'].push({ item, id })
+					}
 				}
-			} else {
-				if (item.important) {
-					data['!u-i'][id] = item
-				} else {
-					data['!u-!i'][id] = item
-				}
-			}
-			return data
-		}, { 'u-i': {}, 'u-!i': {}, '!u-i': {}, '!u-!i': {} })
+				return data
+			}, { 'u-i': [], 'u-!i': [], '!u-i': [], '!u-!i': [] })
 	}
 
-	renderRow = (data, sectionID, rowID) => {
+	renderRow = ({ item, id }, sectionID, rowID) => {
 		return (
 			<TodoItem
-				{ ...data }
-				change={ this.props.changeItem.bind(null, rowID) }
-				delete={ this.props.deleteItem.bind(null, rowID) }
-				edit={ this.props.goToEditItem.bind(null, rowID, data) }
+				{ ...item }
+				change={ this.props.changeItem.bind(null, id) }
+				delete={ this.props.deleteItem.bind(null, id) }
+				edit={ this.props.goToEditItem.bind(null, id, item) }
 			/>
 		)
 	}
