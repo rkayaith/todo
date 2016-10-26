@@ -34,10 +34,11 @@ export default class TodoApp extends Component {
                             />
                         )
                         case 'edit-item': return (
+                            // route must have property 'itemId'
+                            // that has the id of the item to edit
                             <EditItemScene
-                                item={ route.item }
-                                itemId={ route.itemId }
-                                changeItem={ this.changeItem }
+                                item={ this.state.data[route.itemId] }
+                                change={ this.changeItem.bind(null, route.itemId) }
                                 navigator={ navigator }
                             />
                         )

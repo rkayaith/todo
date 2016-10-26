@@ -31,7 +31,7 @@ export default class HomeScene extends Component {
 		this.props.navigator.push({ id: 'add-item' })
 	}
 
-	goToEditItem = (itemId, item) => {
-		this.props.navigator.push({ id: 'edit-item', itemId, item })
+	goToEditItem = (itemId) => {
+		this.props.navigator.push({ id: 'edit-item', itemId })
 	}
 }

@@ -64,7 +64,7 @@ export default class TodoList extends Component {
 				{ ...item }
 				change={ this.props.changeItem.bind(null, id) }
 				delete={ this.props.deleteItem.bind(null, id) }
-				edit={ this.props.goToEditItem.bind(null, id, item) }
+				edit={ this.props.goToEditItem.bind(null, id) }
 			/>
 		)
 	}

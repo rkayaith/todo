@@ -24,7 +24,7 @@ export default class EditItemScene extends Component {
 	}
 
 	submit = (item) => {
-		this.props.changeItem(this.props.itemId, item)
+		this.props.change(item)
 		this.props.navigator.pop()
 	}
 }
