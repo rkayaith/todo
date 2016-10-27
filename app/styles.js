@@ -292,7 +292,7 @@ export const style = {
 		backgroundColor: colors.grey100,
 	},
 	text: {
-		fontSize: 20,
+		fontSize: 14,
 	},
 }
 

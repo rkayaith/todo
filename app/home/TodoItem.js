@@ -19,6 +19,7 @@ export default class TodoItem extends Component {
                 <Text onPress={ this.props.edit } style={ styles.item }>E</Text>
                 <TextInput
                     value={ this.props.text }
+                    underlineColorAndroid="rgba(0, 0, 0, 0)"
                     onChangeText={ text => this.props.change({ text }) }
                     style={ [ styles.input, styles.item] }
                 />
@@ -37,7 +38,9 @@ const styles = StyleSheet.create({
         marginHorizontal: 5,
     },
     input: {
-        flex: 1
+        flex: 1,
+        height: 40,
+
     },
     checked: {
         color: 'red'
@@ -45,6 +48,8 @@ const styles = StyleSheet.create({
     container: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		paddingHorizontal: 15,
+		paddingHorizontal: 8,
+        marginHorizontal: 16,
+        elevation: 2,
 	},
 })

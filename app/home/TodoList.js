@@ -26,8 +26,8 @@ export default class TodoList extends Component {
 				<ListView
 					dataSource={ this.state.ds }
 					renderRow={ this.renderRow }
+					renderSectionHeader={ this.renderSectionHeader }
 					enableEmptySections={ true }
-					// renderSectionHeader={ (sectionData, sectionId) => <Text>{sectionId}</Text>}
 				/>
 			</View>
 		)
@@ -70,4 +70,26 @@ export default class TodoList extends Component {
 		)
 	}
 
+	renderSectionHeader = (sectionData, sectionId) => {
+		let title
+		switch (sectionId) {
+			case 'u-i': title = "Urgent, Important"; break
+			case 'u-!i': title = "Ugent, Not Important"; break
+			case '!u-i': title = "Not Urgent, Important"; break
+			case '!u-!i': title = "Not Urgent, Not Important"; break
+		}
+		return (
+			<Text style={ styles.sectionHeader }>{ title }</Text>
+		)
+	}
+
 }
+
+const styles = StyleSheet.create({
+	sectionHeader: {
+		marginHorizontal: 20,
+		marginTop: 5,
+		fontSize: 12,
+		fontWeight: 'bold'
+	}
+})

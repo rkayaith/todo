@@ -7,3 +7,4 @@ TODO:
 - list section styling and animations (will probably require major changes to ```home/TodoList```)
 - notifications
 - make everything pretty
+- figure out why elevation property (material shadows) aren't working
