@@ -1,10 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, TextInput, StyleSheet } from 'react-native'
-import { MKButton } from 'react-native-material-kit'
 
 import styles from '../styles'
-
-let FloatingActionButton = MKButton.plainFab().build()
 
 // export default class AddItemButton extends Component {
 // 	constructor(props) {
