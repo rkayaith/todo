@@ -117,6 +117,21 @@ class TodoListSection extends Component {
 				data.checked[id] = _data[id]
 			}
 		}
+
+		// LayoutAnimation doesn't play nice with multiple sections, so merge everything into one
+		// TODO: clean this up if we're sticking with LayoutAnimation
+		data.all = {}
+		for (id in data.unchecked) {
+			data.all[id] = data.unchecked[id]
+			delete data.unchecked[id]
+		}
+		for (id in data.checked) {
+			data.all[id] = data.checked[id]
+			delete data.checked[id]
+		}
+		delete data.unchecked
+		delete data.checked
+
 		return data
 	}
 

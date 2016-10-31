@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Navigator } from 'react-native'
-import { View, Text, AsyncStorage, StyleSheet } from 'react-native'
+import { View, Text, AsyncStorage, StyleSheet, UIManager, LayoutAnimation } from 'react-native'
 
 import HomeScene from './home/HomeScene'
 import AddItemScene from './add-item/AddItemScene'
@@ -10,6 +10,11 @@ import mock_data from './MOCK_DATA'
 
 export default class TodoApp extends Component {
     state = { data: {} }
+
+    constructor(props) {
+        super(props)
+        UIManager.setLayoutAnimationEnabledExperimental(true)
+    }
 
     componentDidMount() {
         this.getStoredData()
@@ -64,6 +69,10 @@ export default class TodoApp extends Component {
         )
     }
 
+    layoutAnimation = () => {
+        LayoutAnimation.easeInEaseOut()
+    }
+
     getStoredData = async () => {
         let data = JSON.parse(await AsyncStorage.getItem('data'))
         if (data) {
@@ -80,18 +89,21 @@ export default class TodoApp extends Component {
     addItem = (item) => {
         let data = Object.assign({}, this.state.data)
         data[uuid()] = item
+        this.layoutAnimation()
         this.setState({ data })
     }
 
     changeItem = (id, changes) => {
 		let data = Object.assign({}, this.state.data)
 		data[id] = { ...data[id], ...changes }
+        this.layoutAnimation()
 		this.setState({ data })
 	}
 
     deleteItem = (id) => {
         let data = Object.assign({}, this.state.data)
         delete data[id]
+        this.layoutAnimation()
         this.setState({ data })
     }
 
