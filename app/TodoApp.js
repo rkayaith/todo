@@ -9,7 +9,7 @@ import EditItemScene from './edit-item/EditItemScene'
 import mock_data from './MOCK_DATA'
 
 export default class TodoApp extends Component {
-    state = { data: [] }
+    state = { data: {} }
 
     componentDidMount() {
         this.getStoredData()
@@ -78,26 +78,34 @@ export default class TodoApp extends Component {
     }
 
     addItem = (item) => {
-        let data = this.state.data.slice(0)
-        data.push(item)
+        let data = Object.assign({}, this.state.data)
+        data[uuid()] = item
         this.setState({ data })
     }
 
     changeItem = (id, changes) => {
-		let data = this.state.data.slice(0)
+		let data = Object.assign({}, this.state.data)
 		data[id] = { ...data[id], ...changes }
 		this.setState({ data })
 	}
 
     deleteItem = (id) => {
-        let data = this.state.data.slice(0)
-        data.splice(id, 1)
+        let data = Object.assign({}, this.state.data)
+        delete data[id]
         this.setState({ data })
     }
 
     resetData = () => {
         this.setState({ data: mock_data })
     }
+}
+
+function uuid() {
+    // http://stackoverflow.com/a/2117523
+	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+	    var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8)
+	    return v.toString(16)
+	})
 }
 
 // red background just for debugging

@@ -34,8 +34,8 @@ export default class TodoList extends Component {
 	}
 
 	sortData = (data) => {
-		// the id of an item is it's index in the data array
-		return data.map((item, index) => ({ item, id: index }))
+		// the id of an item is it's key in the data object
+		return Object.keys(data).map(key => ({ item: data[key], id: key }))
 			.sort((a, b) => {
 				if (a.item.checked && !b.item.checked) return -1
 				if (!a.item.checked && b.item.checked) return 1
