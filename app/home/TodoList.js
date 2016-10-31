@@ -1,10 +1,82 @@
 import React, { Component } from 'react'
 import { View, Text, ListView, StyleSheet } from 'react-native'
 
+import { colors } from '../styles'
 import TodoItem from './TodoItem'
 
 export default class TodoList extends Component {
 
+	render() {
+		// TODO: Test and fix scrolling behaviour
+		let urgent_important = {}
+		let urgent_notimportant = {}
+		let noturgent_important = {}
+		let noturgent_notimportant = {}
+
+
+		for (id in this.props.data) {
+			let item = this.props.data[id]
+			if (item.urgent) {
+				if (item.important) {
+					urgent_important[id] = item
+				} else {
+					urgent_notimportant[id] = item
+				}
+			} else {
+				if (item.important) {
+					noturgent_important[id] = item
+				} else {
+					noturgent_notimportant[id] = item
+				}
+			}
+		}
+
+		return (
+			<View>
+				<TodoListSection
+					data={ urgent_important }
+					title="Urgent, Important"
+					renderRow={ this.renderRow }
+					style={{ backgroundColor: colors.red100 }}
+				/>
+				<TodoListSection
+					data={ urgent_notimportant }
+					title="Urgent, Not Important"
+					renderRow={ this.renderRow }
+					style={{ backgroundColor: colors.orange100 }}
+				/>
+				<TodoListSection
+					data={ noturgent_important }
+					title="Not Urgent, Important"
+					renderRow={ this.renderRow }
+					style={{ backgroundColor: colors.yellow100 }}
+				/>
+				<TodoListSection
+					data={ noturgent_notimportant }
+					title="Not Urgent, Not Important"
+					renderRow={ this.renderRow }
+					style={{ backgroundColor: colors.green100 }}
+				/>
+			</View>
+		)
+	}
+
+	renderRow = (item, sectionID, rowID) => {
+		return (
+			<TodoItem
+				{ ...item }
+				key={ rowID }
+				change={ this.props.changeItem.bind(null, rowID) }
+				delete={ this.props.deleteItem.bind(null, rowID) }
+				edit={ this.props.goToEditItem.bind(null, rowID) }
+			/>
+		)
+	}
+
+}
+
+
+class TodoListSection extends Component {
 	constructor(props) {
 		super(props)
 		let ds = new ListView.DataSource({
@@ -20,67 +92,32 @@ export default class TodoList extends Component {
 	}
 
 	render() {
-		// TODO: Test and fix scrolling behaviour
 		return (
 			<View>
+				<Text style={ styles.sectionHeader }>{ this.props.title }</Text>
 				<ListView
+					style={ [styles.section, this.props.style] }
 					dataSource={ this.state.ds }
-					renderRow={ this.renderRow }
-					renderSectionHeader={ this.renderSectionHeader }
+					renderRow={ this.props.renderRow }
 					enableEmptySections={ true }
 				/>
 			</View>
 		)
 	}
 
-	sortData = (data) => {
-		// the id of an item is it's key in the data object
-		return Object.keys(data).map(key => ({ item: data[key], id: key }))
-			.sort((a, b) => {
-				if (a.item.checked && !b.item.checked) return -1
-				if (!a.item.checked && b.item.checked) return 1
-				return 0
-			})
-			.reduce( (data, { item, id }) => {
-				if (item.urgent) {
-					if (item.important) {
-						data['u-i'].push({ item, id })
-					} else {
-						data['u-!i'].push({ item, id })
-					}
-				} else {
-					if (item.important) {
-						data['!u-i'].push({ item, id })
-					} else {
-						data['!u-!i'].push({ item, id })
-					}
-				}
-				return data
-			}, { 'u-i': [], 'u-!i': [], '!u-i': [], '!u-!i': [] })
-	}
-
-	renderRow = ({ item, id }, sectionID, rowID) => {
-		return (
-			<TodoItem
-				{ ...item }
-				change={ this.props.changeItem.bind(null, id) }
-				delete={ this.props.deleteItem.bind(null, id) }
-				edit={ this.props.goToEditItem.bind(null, id) }
-			/>
-		)
-	}
-
-	renderSectionHeader = (sectionData, sectionId) => {
-		let title
-		switch (sectionId) {
-			case 'u-i': title = "Urgent, Important"; break
-			case 'u-!i': title = "Ugent, Not Important"; break
-			case '!u-i': title = "Not Urgent, Important"; break
-			case '!u-!i': title = "Not Urgent, Not Important"; break
+	sortData = (_data) => {
+		let data = {
+			unchecked: {},
+			checked: {}
 		}
-		return (
-			<Text style={ styles.sectionHeader }>{ title }</Text>
-		)
+		for (id in _data) {
+			if (!_data[id].checked) {
+				data.unchecked[id] = _data[id]
+			} else {
+				data.checked[id] = _data[id]
+			}
+		}
+		return data
 	}
 
 }
@@ -91,5 +128,9 @@ const styles = StyleSheet.create({
 		marginTop: 5,
 		fontSize: 12,
 		fontWeight: 'bold'
+	},
+	section: {
+		marginHorizontal: 16,
+		elevation: 2
 	}
 })

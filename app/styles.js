@@ -286,6 +286,7 @@ export const style = {
 	scene: {
 		flex: 1,
 		backgroundColor: colors.grey50,
+		elevation: 0
 	},
 	toolbar: {
 		height: 56,

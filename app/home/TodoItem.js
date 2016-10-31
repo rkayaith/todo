@@ -6,12 +6,8 @@ import { style, colors } from '../styles'
 export default class TodoItem extends Component {
     render() {
 
-        let backgroundColor = this.props.urgent ?
-            (this.props.important ? colors.red100 : colors.orange100) :
-            (this.props.important ? colors.yellow100 : colors.green100)
-
         return (
-            <View style={ [styles.container, { backgroundColor }] }>
+            <View style={ styles.container }>
                 <Text onPress={ this.onPress } style={ [styles.item, this.props.checked && styles.checked] }>
                     Y
                 </Text>
@@ -49,7 +45,5 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		paddingHorizontal: 8,
-        marginHorizontal: 16,
-        elevation: 2,
 	},
 })
