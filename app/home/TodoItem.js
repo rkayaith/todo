@@ -7,13 +7,13 @@ export default class TodoItem extends Component {
     render() {
 
         return (
-            <View style={ styles.container }>
+            <View style={ [styles.container, this.props.checked && styles.containerChecked] }>
                 <Text onPress={ this.onPress } style={ [styles.item, this.props.checked && styles.checked] }>
                     Y
                 </Text>
                 <Text onPress={ this.props.delete } style={ styles.item }>D</Text>
                 <Text onPress={ this.props.edit } style={ styles.item }>E</Text>
-                <Text style={ styles.item }>
+                <Text style={ [styles.item, this.props.checked && styles.itemChecked] }>
                     { this.props.text }
                 </Text>
             </View>
@@ -30,6 +30,9 @@ const styles = StyleSheet.create({
         ...style.text,
         marginHorizontal: 5,
     },
+    itemChecked: {
+        textDecorationLine: "line-through",
+    },
     checked: {
         color: 'red'
     },
@@ -39,4 +42,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 8,
 		paddingVertical: 6,
 	},
+    containerChecked: {
+        opacity: 0.5
+    }
 })
