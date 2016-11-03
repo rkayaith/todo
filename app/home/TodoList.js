@@ -13,10 +13,12 @@ export default class TodoList extends Component {
 		let noturgent_important = {}
 		let noturgent_notimportant = {}
 
-
+		let now = Date.now()
 		for (id in this.props.data) {
 			let item = this.props.data[id]
-			if (item.urgent) {
+			// item.urgent is a unix timestamp for
+			// when the item should become urgent
+			if (item.urgent <= now) {
 				if (item.important) {
 					urgent_important[id] = item
 				} else {

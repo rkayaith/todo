@@ -16,7 +16,7 @@ export default class AddItemScene extends Component {
 					onIconClicked={ this.props.navigator.pop }
 				/>
 				<ItemEditor
-					item={{ text: "", checked: false, urgent: false, important: false }}
+					item={{ text: "", checked: false, urgent: Infinity, important: false }}
 					submit={ this.submit }
 				/>
 			</View>

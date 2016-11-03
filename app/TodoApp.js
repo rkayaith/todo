@@ -77,6 +77,12 @@ export default class TodoApp extends Component {
         let data = JSON.parse(await AsyncStorage.getItem('data'))
         if (data) {
             console.log('TodoApp.getStoredData: got data from storage')
+            // value of Infinity gets stored as null when stringified, so we restore it
+            for (let id in data) {
+                if (data[id].urgent === null) {
+                    data[id].urgent = Infinity
+                }
+            }
             this.setState({ data })
         }
     }
