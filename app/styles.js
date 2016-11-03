@@ -278,7 +278,8 @@ const md_colors = {
 
 export const colors = {
 	...md_colors,
-	primaryColor: md_colors.indigo500
+	primaryColor: 		md_colors.indigo500,
+	primaryColorDark: 	md_colors.indigo700,
 }
 
 // import this object to combine certain style properties
@@ -288,10 +289,7 @@ export const style = {
 		backgroundColor: colors.grey50,
 		elevation: 0
 	},
-	toolbar: {
-		height: 56,
-		backgroundColor: colors.grey100,
-	},
+
 	text: {
 		color: colors.grey900,
 		fontSize: 15,

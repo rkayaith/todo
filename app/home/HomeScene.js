@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { View, Text } from 'react-native'
 
 import styles, { colors } from '../styles'
-import { Toolbar } from '../components'
+import { Toolbar, StatusBar } from '../components'
 
 import TodoList from './TodoList'
 import AddItemButton from './AddItemButton'
@@ -11,6 +11,7 @@ export default class HomeScene extends Component {
 	render() {
 		return (
 			<View style={ styles.scene }>
+				<StatusBar backgroundColor={ colors.primaryColorDark }/>
 				<Toolbar
 					title='Todo List'
 					titleColor='white'

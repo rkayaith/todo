@@ -4,7 +4,7 @@ import { View, Text, TouchableHighlight, StyleSheet } from 'react-native'
 import ItemEditor from '../common/ItemEditor'
 
 import { style, colors } from '../styles'
-import { Toolbar } from '../components'
+import { Toolbar, StatusBar } from '../components'
 
 
 const defaultItem = { text: "", checked: false, urgent: Infinity, important: false }
@@ -19,6 +19,7 @@ export default class AddItemScene extends Component {
 	render() {
 		return (
 			<View style={ styles.scene }>
+				<StatusBar />
 				<Toolbar
 					title="Add Item"
 					navIconName="arrow-back"

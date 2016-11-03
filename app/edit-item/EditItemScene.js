@@ -4,7 +4,7 @@ import { View } from 'react-native'
 import ItemEditor from '../common/ItemEditor'
 
 import styles from '../styles'
-import { Toolbar } from '../components'
+import { Toolbar, StatusBar } from '../components'
 
 export default class EditItemScene extends Component {
 
@@ -20,6 +20,7 @@ export default class EditItemScene extends Component {
 	render() {
 		return (
 			<View style={ styles.scene }>
+				<StatusBar />
 				<Toolbar
 					title="Edit Item"
 					navIconName="arrow-back"
