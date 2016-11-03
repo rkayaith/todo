@@ -65,6 +65,7 @@ export default class TodoApp extends Component {
                     }
                     return null
                 }}
+                configureScene={ () => Navigator.SceneConfigs.FloatFromBottomAndroid }
             />
         )
     }
