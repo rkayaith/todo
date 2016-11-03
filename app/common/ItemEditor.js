@@ -1,22 +1,22 @@
 import React, { Component } from 'react'
-import { View, Text, TextInput, Switch, StyleSheet, DatePickerAndroid, TimePickerAndroid } from 'react-native'
+import {
+	View, Text, TextInput, Switch, StyleSheet,
+	Picker, DatePickerAndroid, TimePickerAndroid,
+} from 'react-native'
 
-import { Picker } from '../components'
 import { style, colors } from '../styles'
 
 export default class ItemEditor extends Component {
 	constructor(props) {
 		super(props)
-		this.state = { ...props.item }
+		this.state = this.stateFromProps(props)
 	}
 
 	componentWillReceiveProps(props) {
-		this.state = { ...props.item }
+		this.setState(this.stateFromProps(props))
 	}
 
 	render() {
-		// the picker item that will be selected
-		let selectedValue
 		// the static picker items
 		let items = [
 			{ label: "Now", value: -Infinity },
@@ -24,44 +24,40 @@ export default class ItemEditor extends Component {
 			{ label: "Custom", value: "custom_static" },
 		]
 
-		if (this.state.urgent === Infinity || this.state.urgent === -Infinity) {
-			// Infinity (Never) and -Infinity (Now) are both static picker items that we can select
-			selectedValue = this.state.urgent
-		} else {
+		if (this.state.selectedValue === "custom") {
 			// a custom date is selected, so we add a new picker item and
 			// stringify the date to use it as the label
-			selectedValue = "custom"
-			items = [{ label: this.parseDate(this.state.urgent), value: "custom" }].concat(items)
+			items = [{ label: this.parseDate(this.props.item.urgent), value: "custom" }].concat(items)
 		}
 
 		return (
 			<View>
 				<View style={ styles.row }>
-					<Text>{ JSON.stringify(this.state) }</Text>
+					<Text>{ JSON.stringify(this.props.item) }</Text>
 				</View>
 
 				<View style={ styles.row }>
 					<TextInput
 						style={ [styles.text, styles.input] }
-						value={ this.state.text }
+						value={ this.props.item.text }
 						placeholder="Item Text"
-						onChangeText={ text => this.setState({ text }) }
+						onChangeText={ text => this.props.change({ text }) }
 					/>
 				</View>
 
 				<View style={ styles.row }>
 					<Text style={ styles.text }>Checked</Text>
 					<Switch
-						value={ this.state.checked }
-						onValueChange={ checked => this.setState({ checked }) }
+						value={ this.props.item.checked }
+						onValueChange={ checked => this.props.change({ checked }) }
 					/>
 				</View>
 
 				<View style={ styles.row }>
 					<Text style={ styles.text }>Important</Text>
 					<Switch
-						value={ this.state.important }
-						onValueChange={ important => this.setState({ important }) }
+						value={ this.props.item.important }
+						onValueChange={ important => this.props.change({ important }) }
 					/>
 				</View>
 
@@ -70,52 +66,49 @@ export default class ItemEditor extends Component {
 					<Picker
 						mode='dropdown'
 						style={ styles.picker }
-						selectedValue={ selectedValue }
-						onValueChange={ this.valueChange }>
+						selectedValue={ this.state.selectedValue }
+						onValueChange={ this.onValueChange }>
 						{ items.map(props => <Picker.Item key={ props.label } { ...props }/>) }
 					</Picker>
-				</View>
-
-				<View style={ styles.row }>
-					<Text style={ styles.text } onPress={ this.submit }>Submit</Text>
 				</View>
 			</View>
 		)
 	}
 
-	valueChange = async (value) => {
+	onValueChange = async (value) => {
+		// throw out bogus calls
+		if (value === this.state.selectedValue) return
 		// if one of the custom options are selected, show the date and time pickers
 		if (value === "custom" || value === "custom_static") {
+			this.setState({ selectedValue: "custom_static" })
 			value = await showPickers.apply(this)
 		}
-		this.setState({ urgent: value })
+		this.props.change({ urgent: value })
 
 		async function showPickers() {
-			let date = new Date(this.state.urgent)
+			let date = new Date(this.props.item.urgent)
 			if (isNaN(date.getTime())) {
-				// current state isn't a valid date, default to today's date
+				// current selected date isn't a valid date, default to today's date
 				date = new Date()
 			}
 
 			var { action, year, month, day } = await DatePickerAndroid.open({ date })
-			if (action === DatePickerAndroid.dismissedAction) return this.state.urgent
+			if (action === DatePickerAndroid.dismissedAction) return this.props.item.urgent
 
 			var { action, hour, minute } = await TimePickerAndroid.open({
 				hour: date.getHours(), minute: date.getMinutes(),
 			})
-			if (action === TimePickerAndroid.dismissedAction) return this.state.urgent
+			if (action === TimePickerAndroid.dismissedAction) return this.props.item.urgent
 
 			return Date.UTC(year, month, day, hour, minute)
 		}
 	}
 
-	submit = () => {
-		let item = { ...this.state }
-		// Replace -Infinity with the current date when submitting
-		if (item.urgent === -Infinity) {
-			item.urgent = Date.now()
+	stateFromProps = (props) => {
+		if (props.item.urgent === Infinity || props.item.urgent === -Infinity) {
+			return { selectedValue: props.item.urgent }
 		}
-		this.props.submit(item)
+		return { selectedValue: "custom" }
 	}
 
 	parseDate = (dateNum) => {
@@ -139,7 +132,8 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		borderBottomWidth: 1,
 		borderBottomColor: colors.grey200,
-		paddingHorizontal: 24,
+		paddingHorizontal: 12,
+		marginHorizontal: 12,
 	},
 	picker: {
 		width: 250,
