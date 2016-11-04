@@ -1,48 +1,50 @@
 import React, { Component } from 'react'
-import { View, Text, TextInput, StyleSheet } from 'react-native'
+import { View, Text, TextInput, StyleSheet, TouchableNativeFeedback } from 'react-native'
 
 import { style, colors } from '../styles'
+import { Touchable, CheckBox, Button, Icon } from '../components'
 
 export default class TodoItem extends Component {
     render() {
-
         return (
-            <View style={ [styles.container, this.props.checked && styles.containerChecked] }>
-                <Text onPress={ this.onPress } style={ [styles.item, this.props.checked && styles.checked] }>
-                    Y
-                </Text>
-                <Text onPress={ this.props.delete } style={ styles.item }>D</Text>
-                <Text onPress={ this.props.edit } style={ styles.item }>E</Text>
-                <Text style={ [styles.item, this.props.checked && styles.itemChecked] }>
+            <Touchable
+                onPress={ this.props.edit }
+                style={ [styles.container, this.props.checked && styles.containerChecked] }>
+
+                <CheckBox
+                    size={ 36 }
+                    value={ this.props.checked }
+                    onValueChange={ checked => this.props.change({ checked }) } />
+
+                <Text style={ [styles.itemText, this.props.checked && styles.textChecked] }>
                     { this.props.text }
                 </Text>
-            </View>
-        )
-    }
 
-    onPress = () => {
-        this.props.change({ checked: !this.props.checked })
+                <Button size={ 36 } onPress={ this.props.delete }>
+                    <Icon name="clear" size={ 15 } style={{ opacity: 0.75 }}/>
+                </Button>
+            </Touchable>
+        )
     }
 }
 
 const styles = StyleSheet.create({
-    item: {
-        ...style.text,
-        marginHorizontal: 5,
-    },
-    itemChecked: {
-        textDecorationLine: "line-through",
-    },
-    checked: {
-        color: 'red'
-    },
+    ...style,
     container: {
+        height: 36,
 		flexDirection: 'row',
 		alignItems: 'center',
-		paddingHorizontal: 8,
-		paddingVertical: 6,
 	},
     containerChecked: {
         opacity: 0.5
-    }
+    },
+    itemText: {
+        ...style.text,
+        flex: 1,
+        marginHorizontal: 5,
+        paddingBottom: 1,
+    },
+    textChecked: {
+        textDecorationLine: "line-through",
+    },
 })

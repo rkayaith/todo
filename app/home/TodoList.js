@@ -7,7 +7,6 @@ import TodoItem from './TodoItem'
 export default class TodoList extends Component {
 
 	render() {
-		// TODO: Test and fix scrolling behaviour
 		let urgent_important = {}
 		let urgent_notimportant = {}
 		let noturgent_important = {}
@@ -148,6 +147,6 @@ const styles = StyleSheet.create({
 	},
 	section: {
 		marginHorizontal: 16,
-		elevation: 2
+		elevation: 2,
 	}
 })

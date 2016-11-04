@@ -8,6 +8,8 @@ import EditItemScene from './edit-item/EditItemScene'
 
 import mock_data from './MOCK_DATA'
 
+import styles from './styles'
+
 export default class TodoApp extends Component {
     state = { data: {} }
 
@@ -126,11 +128,3 @@ function uuid() {
 	    return v.toString(16)
 	})
 }
-
-// red background just for debugging
-// use ./styles.scene later
-const styles = StyleSheet.create({
-    scene: {
-        backgroundColor: 'red'
-    }
-})

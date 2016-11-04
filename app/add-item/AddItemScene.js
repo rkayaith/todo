@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import { View, Text, TouchableHighlight, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 
 import ItemEditor from '../common/ItemEditor'
 
 import { style, colors } from '../styles'
-import { Toolbar, StatusBar } from '../components'
+import { Toolbar, StatusBar, Touchable } from '../components'
 
 
 const defaultItem = { text: "", checked: false, urgent: Infinity, important: false }
@@ -30,9 +30,9 @@ export default class AddItemScene extends Component {
 					change={ this.setState.bind(this) }
 				/>
 				<View style={ styles.buttonContainer }>
-					<TouchableHighlight style={ styles.button } onPress={ this.done }>
+					<Touchable style={ styles.button } onPress={ this.done }>
 						<Text style={ styles.buttonText }>ADD ITEM</Text>
-					</TouchableHighlight>
+					</Touchable>
 				</View>
 			</View>
 		)
@@ -53,12 +53,13 @@ const styles = StyleSheet.create({
 	...style,
 	button: {
 		height: 50,
-		backgroundColor: colors.grey200,
+		backgroundColor: colors.primaryColor,
 		justifyContent: 'center',
 		alignItems: 'center',
 	},
 	buttonText: {
 		...style.text,
+		color: 'white',
 		fontSize: 20,
 	},
 	buttonContainer: {

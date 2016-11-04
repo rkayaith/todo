@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
-import { View, Text } from 'react-native'
+import { View, ScrollView, Text } from 'react-native'
 
 import styles, { colors } from '../styles'
-import { Toolbar, StatusBar } from '../components'
+import { Toolbar, StatusBar, ActionButton } from '../components'
 
 import TodoList from './TodoList'
-import AddItemButton from './AddItemButton'
 
 export default class HomeScene extends Component {
 	render() {
@@ -17,14 +16,17 @@ export default class HomeScene extends Component {
 					titleColor='white'
 					style={{ backgroundColor: colors.primaryColor }}
 				/>
-				<TodoList
-					data={ this.props.data }
-					changeItem={ this.props.changeItem }
-					deleteItem={ this.props.deleteItem }
-					goToEditItem={ this.goToEditItem }
-				/>
-				<AddItemButton goToAddItem={ this.goToAddItem } />
-				<Text onPress={ this.props.resetData }>Load mock data</Text>
+				<ScrollView>
+					<TodoList
+						data={ this.props.data }
+						changeItem={ this.props.changeItem }
+						deleteItem={ this.props.deleteItem }
+						goToEditItem={ this.goToEditItem }
+					/>
+					<Text onPress={ this.props.resetData }>Load mock data</Text>
+				</ScrollView>
+
+				<ActionButton icon="add" onPress={ this.goToAddItem } />
 			</View>
 		)
 	}

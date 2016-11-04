@@ -280,6 +280,7 @@ export const colors = {
 	...md_colors,
 	primaryColor: 		md_colors.indigo500,
 	primaryColorDark: 	md_colors.indigo700,
+	accentColor: 		md_colors.red500,
 }
 
 // import this object to combine certain style properties

@@ -4,6 +4,7 @@ import {
 	Picker, DatePickerAndroid, TimePickerAndroid,
 } from 'react-native'
 
+import { CheckBox } from '../components'
 import { style, colors } from '../styles'
 
 export default class ItemEditor extends Component {
@@ -47,7 +48,8 @@ export default class ItemEditor extends Component {
 
 				<View style={ styles.row }>
 					<Text style={ styles.text }>Checked</Text>
-					<Switch
+					<CheckBox
+						size={ 50 }
 						value={ this.props.item.checked }
 						onValueChange={ checked => this.props.change({ checked }) }
 					/>
@@ -55,7 +57,8 @@ export default class ItemEditor extends Component {
 
 				<View style={ styles.row }>
 					<Text style={ styles.text }>Important</Text>
-					<Switch
+					<CheckBox
+						size={ 50 }
 						value={ this.props.item.important }
 						onValueChange={ important => this.props.change({ important }) }
 					/>
