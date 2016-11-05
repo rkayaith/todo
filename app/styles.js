@@ -281,6 +281,10 @@ export const colors = {
 	primaryColor: 		md_colors.indigo500,
 	primaryColorDark: 	md_colors.indigo700,
 	accentColor: 		md_colors.red500,
+	level4: 			md_colors.red100, 		// urgent, important
+	level3: 			md_colors.orange100, 	// urgent, not important
+	level2: 			md_colors.yellow100, 	// not urgent, important
+	level1: 			md_colors.green100, 	// not urgent, not important
 }
 
 // import this object to combine certain style properties

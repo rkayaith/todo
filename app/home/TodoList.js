@@ -38,25 +38,25 @@ export default class TodoList extends Component {
 					data={ urgent_important }
 					title="Urgent, Important"
 					renderRow={ this.renderRow }
-					style={{ backgroundColor: colors.red100 }}
+					style={{ backgroundColor: colors.level4 }}
 				/>
 				<TodoListSection
 					data={ urgent_notimportant }
 					title="Urgent, Not Important"
 					renderRow={ this.renderRow }
-					style={{ backgroundColor: colors.orange100 }}
+					style={{ backgroundColor: colors.level3 }}
 				/>
 				<TodoListSection
 					data={ noturgent_important }
 					title="Not Urgent, Important"
 					renderRow={ this.renderRow }
-					style={{ backgroundColor: colors.yellow100 }}
+					style={{ backgroundColor: colors.level2 }}
 				/>
 				<TodoListSection
 					data={ noturgent_notimportant }
 					title="Not Urgent, Not Important"
 					renderRow={ this.renderRow }
-					style={{ backgroundColor: colors.green100 }}
+					style={{ backgroundColor: colors.level1 }}
 				/>
 			</View>
 		)
