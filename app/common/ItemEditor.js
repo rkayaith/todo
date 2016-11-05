@@ -122,7 +122,7 @@ export default class ItemEditor extends Component {
 			})
 			if (action === TimePickerAndroid.dismissedAction) return this.props.item.urgent
 
-			return Date.UTC(year, month, day, hour, minute)
+			return new Date(year, month, day, hour, minute).getTime()
 		}
 	}
 
