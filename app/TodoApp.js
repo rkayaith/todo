@@ -24,10 +24,6 @@ export default class TodoApp extends Component {
 
     componentWillUpdate(props, state) {
         if (state.data !== this.state.data) {
-            // TODO: Throttle storage attempts? TodoItem text input repeatedly calls
-            // this.changeItem() and updates state
-            // Either use Rx.Observable.audit or reduce this.changeItem() calls
-            // (use onEndEditing and onSubmitEditing in TodoItem)
             this.setStoredData(state.data)
         }
     }
@@ -122,6 +118,7 @@ export default class TodoApp extends Component {
     }
 
     resetData = () => {
+        this.layoutAnimation()
         this.setState({ data: mock_data })
     }
 }
