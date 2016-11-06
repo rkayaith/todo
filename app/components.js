@@ -75,7 +75,7 @@ export { Icon }
 const styles = StyleSheet.create({
 	toolbar: {
 		height: 56,
-		backgroundColor: colors.grey200,
+		backgroundColor: colors.grey50,
 	},
 	button: {
 		alignItems: 'center',

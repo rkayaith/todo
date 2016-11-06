@@ -16,7 +16,9 @@ export default class TodoItem extends Component {
                     value={ this.props.checked }
                     onValueChange={ checked => this.props.change({ checked }) } />
 
-                <Text style={ [styles.itemText, this.props.checked && styles.textChecked] }>
+                <Text
+                    numberOfLines={ 1 }
+                    style={ [styles.itemText, this.props.checked && styles.textChecked] }>
                     { this.props.text }
                 </Text>
 

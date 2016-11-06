@@ -27,13 +27,13 @@ export default class AddItemScene extends Component {
 				/>
 				<ItemEditor
 					item={ this.state }
-					change={ this.setState.bind(this) }
-				/>
-				<View style={ styles.buttonContainer }>
-					<Touchable style={ styles.button } onPress={ this.done }>
-						<Text style={ styles.buttonText }>ADD ITEM</Text>
-					</Touchable>
-				</View>
+					change={ this.setState.bind(this) }>
+					<View style={ styles.buttonContainer }>
+						<Touchable style={ styles.button } onPress={ this.done }>
+							<Text style={ styles.buttonText }>ADD ITEM</Text>
+						</Touchable>
+					</View>
+				</ItemEditor>
 			</View>
 		)
 	}
@@ -52,19 +52,19 @@ export default class AddItemScene extends Component {
 const styles = StyleSheet.create({
 	...style,
 	button: {
-		height: 50,
-		backgroundColor: colors.primaryColor,
 		justifyContent: 'center',
 		alignItems: 'center',
+		padding: 8,
 	},
 	buttonText: {
 		...style.text,
-		color: 'white',
-		fontSize: 20,
+		color: colors.primaryColor,
+		fontSize: 16,
+		fontFamily: 'sans-serif-medium',
 	},
 	buttonContainer: {
 		justifyContent: 'flex-end',
-		alignItems: 'stretch',
+		alignItems: 'flex-end',
 		flex: 1,
 	}
 })

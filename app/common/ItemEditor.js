@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {
-	View, Text, TextInput, Switch, StyleSheet, Animated,
+	View, Text, TextInput, Switch, StyleSheet, Animated, LayoutAnimation,
 	Picker, DatePickerAndroid, TimePickerAndroid,
 } from 'react-native'
 
@@ -10,9 +10,11 @@ import { style, colors } from '../styles'
 export default class ItemEditor extends Component {
 
 	state = {
+		cardValue: new Animated.Value(0),
 		bgValue: new Animated.Value(0),
 		bgPrev: style.scene.backgroundColor,
 		bgNext: style.scene.backgroundColor,
+		inputHeight: 0,
 	}
 
 	constructor(props) {
@@ -22,6 +24,7 @@ export default class ItemEditor extends Component {
 
 	componentDidMount() {
 		this.animateBg()
+		Animated.timing(this.state.cardValue, { toValue: 1, duration: 400 }).start()
 	}
 
 	componentWillReceiveProps(props) {
@@ -34,6 +37,8 @@ export default class ItemEditor extends Component {
 			inputRange: [0, 1],
 			outputRange: [this.state.bgPrev, this.state.bgNext],
 		})
+
+		let transform = [{ scaleY: this.state.cardValue }]
 
 		// the static picker items
 		let items = [
@@ -50,19 +55,19 @@ export default class ItemEditor extends Component {
 
 		return (
 			<Animated.View style={ [styles.container, { backgroundColor }] }>
-				<View style={ styles.card }>
-					{/* <View style={ styles.row }>
-						<Text>{ JSON.stringify(this.props.item) }</Text>
-					</View> */}
+				<Animated.View style={ [styles.card, { transform }] }>
 
-					<View style={ styles.row }>
-						<TextInput
-							style={ [styles.text, styles.input] }
-							value={ this.props.item.text }
-							placeholder="Item Text"
-							onChangeText={ text => this.props.change({ text }) }
-						/>
-					</View>
+					<TextInput
+						style={ [styles.text, styles.input, { height: this.state.inputHeight }] }
+						value={ this.props.item.text }
+						placeholder="Item Text"
+						multiline={ true }
+						onChangeText={ text => this.props.change({ text }) }
+						onContentSizeChange={ ({ nativeEvent }) => {
+							LayoutAnimation.easeInEaseOut()
+							this.setState({ inputHeight: nativeEvent.contentSize.height })
+						}}
+					/>
 
 					<View style={ styles.row }>
 						<Text style={ styles.text }>Checked</Text>
@@ -92,7 +97,9 @@ export default class ItemEditor extends Component {
 							{ items.map(props => <Picker.Item key={ props.label } { ...props }/>) }
 						</Picker>
 					</View>
-				</View>
+
+					{ this.props.children }
+				</Animated.View>
 			</Animated.View>
 		)
 	}
@@ -199,6 +206,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		elevation: 2,
 		backgroundColor: 'white',
+		padding: 12
 	},
 	row: {
 		height: 50,
@@ -207,13 +215,14 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		borderBottomWidth: 1,
 		borderBottomColor: colors.grey200,
-		paddingHorizontal: 12,
 		marginHorizontal: 12,
 	},
 	picker: {
+		marginRight: 13,
 		width: 250,
 	},
 	input: {
-		flex: 1
+		fontFamily: 'serif',
+		fontSize: 24,
 	}
 })
