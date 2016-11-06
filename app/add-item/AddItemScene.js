@@ -24,15 +24,18 @@ export default class AddItemScene extends Component {
 					title="Add Item"
 					navIconName="arrow-back"
 					onIconClicked={ this.props.navigator.pop }
+					actions={ [{ title: "Add item", iconName: "add", show: 'always' }] }
+					onActionSelected={ action => {
+						switch (action) {
+							case 0:
+								// delete item
+								return this.done()
+						}
+					}}
 				/>
 				<ItemEditor
 					item={ this.state }
 					change={ this.setState.bind(this) }>
-					<View style={ styles.buttonContainer }>
-						<Touchable style={ styles.button } onPress={ this.done }>
-							<Text style={ styles.buttonText }>ADD ITEM</Text>
-						</Touchable>
-					</View>
 				</ItemEditor>
 			</View>
 		)

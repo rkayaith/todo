@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, ListView, StyleSheet } from 'react-native'
+import { View, ScrollView, Text, ListView, StyleSheet } from 'react-native'
 
 import { colors } from '../styles'
 import TodoItem from './TodoItem'
@@ -33,7 +33,7 @@ export default class TodoList extends Component {
 		}
 
 		return (
-			<View>
+			<ScrollView>
 				<TodoListSection
 					data={ urgent_important }
 					title="Urgent, Important"
@@ -58,7 +58,12 @@ export default class TodoList extends Component {
 					renderRow={ this.renderRow }
 					style={{ backgroundColor: colors.level1 }}
 				/>
-			</View>
+
+				<View
+					// empty footer so scrolling is enabled when items are under the action button
+					style={ styles.footer }
+				/>
+			</ScrollView>
 		)
 	}
 
@@ -148,5 +153,8 @@ const styles = StyleSheet.create({
 	section: {
 		marginHorizontal: 16,
 		elevation: 2,
-	}
+	},
+	footer: {
+		height: 80,
+	},
 })

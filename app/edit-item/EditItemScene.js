@@ -25,6 +25,15 @@ export default class EditItemScene extends Component {
 					title="Edit Item"
 					navIconName="arrow-back"
 					onIconClicked={ this.done }
+					actions={ [{ title: "Delete item", iconName: "delete", show: 'always' }] }
+					onActionSelected={ action => {
+						switch (action) {
+							case 0:
+								// delete item
+								this.props.delete()
+								this.props.navigator.pop()
+						}
+					}}
 				/>
 				<ItemEditor
 					item={ this.state }

@@ -61,6 +61,7 @@ export default class TodoApp extends Component {
                             <EditItemScene
                                 item={ this.state.data[route.itemId] }
                                 change={ this.changeItem.bind(null, route.itemId) }
+                                delete={ this.deleteItem.bind(null, route.itemId) }
                                 navigator={ navigator }
                             />
                         )
@@ -102,16 +103,20 @@ export default class TodoApp extends Component {
         this.setState({ data })
     }
 
-    changeItem = (id, changes) => {
+    changeItem = (ids, changes) => {
 		let data = Object.assign({}, this.state.data)
-		data[id] = { ...data[id], ...changes }
+        for (id of [].concat(ids)) {
+            data[id] = { ...data[id], ...changes }
+        }
         this.layoutAnimation()
 		this.setState({ data })
 	}
 
-    deleteItem = (id) => {
+    deleteItem = (ids) => {
         let data = Object.assign({}, this.state.data)
-        delete data[id]
+        for (id of [].concat(ids)) {
+            delete data[id]
+        }
         this.layoutAnimation()
         this.setState({ data })
     }
