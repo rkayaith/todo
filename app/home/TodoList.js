@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, ScrollView, Text, ListView, StyleSheet } from 'react-native'
 
-import { colors } from '../styles'
+import { style, colors } from '../styles'
 import TodoItem from './TodoItem'
 
 export default class TodoList extends Component {
@@ -99,10 +99,11 @@ class TodoListSection extends Component {
 
 	render() {
 		return (
-			<View>
-				<Text style={ styles.sectionHeader }>{ this.props.title }</Text>
+			<View style={ styles.card } >
+				<View style={ [styles.header, this.props.style] }>
+					<Text style={ styles.headerText }>{ this.props.title }</Text>
+				</View>
 				<ListView
-					style={ [styles.section, this.props.style] }
 					dataSource={ this.state.ds }
 					renderRow={ this.props.renderRow }
 					enableEmptySections={ true }
@@ -144,15 +145,23 @@ class TodoListSection extends Component {
 }
 
 const styles = StyleSheet.create({
-	sectionHeader: {
-		marginHorizontal: 20,
-		marginTop: 5,
-		fontSize: 12,
-		fontWeight: 'bold'
+	header: {
+		height: 36,
+		paddingLeft: 12,
+		justifyContent: 'center',
 	},
-	section: {
+	headerText: {
+		...style.text,
+		fontSize: 15,
+		color: 'white',
+		fontFamily: 'sans-serif-medium',
+		// fontWeight: 'bold',
+	},
+	card: {
 		marginHorizontal: 16,
+		backgroundColor: 'white',
 		elevation: 2,
+		marginTop: 16,
 	},
 	footer: {
 		height: 80,

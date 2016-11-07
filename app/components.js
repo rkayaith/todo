@@ -16,7 +16,7 @@ export const Toolbar = ({ style, ...props }) => (
 export const StatusBar = (props) => (
 	<ReactStatusBar
 		animated={ true }
-		backgroundColor={ colors.grey400 }
+		backgroundColor={ colors.grey300 }
 		{ ...props }
 	/>
 )
@@ -75,7 +75,7 @@ export { Icon }
 const styles = StyleSheet.create({
 	toolbar: {
 		height: 56,
-		backgroundColor: colors.grey50,
+		backgroundColor: colors.grey100,
 	},
 	button: {
 		alignItems: 'center',
