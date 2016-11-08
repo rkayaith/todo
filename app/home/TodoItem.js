@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { View, Text, TextInput, StyleSheet, TouchableNativeFeedback } from 'react-native'
 
 import { style, colors } from '../styles'
-import { Touchable, CheckBox, Button, Icon } from '../components'
+import { Touchable, CheckBox, Icon } from '../components'
 
 export default class TodoItem extends Component {
     render() {
@@ -22,9 +22,9 @@ export default class TodoItem extends Component {
                     { this.props.text }
                 </Text>
 
-                <Button size={ 36 } onPress={ this.props.delete }>
-                    <Icon name="clear" size={ 15 } style={{ opacity: 0.75 }}/>
-                </Button>
+                <Touchable onPress={ this.props.delete }>
+                    <Icon name="clear" size={ 36 } iconSize={ 15 } style={{ opacity: 0.75 }}/>
+                </Touchable>
             </Touchable>
         )
     }
@@ -33,7 +33,6 @@ export default class TodoItem extends Component {
 const styles = StyleSheet.create({
     ...style,
     container: {
-        height: 36,
 		flexDirection: 'row',
 		alignItems: 'center',
 	},

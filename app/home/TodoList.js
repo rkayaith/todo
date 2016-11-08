@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { View, ScrollView, Text, ListView, StyleSheet } from 'react-native'
 
 import { style, colors } from '../styles'
+import { Icon } from '../components'
 import TodoItem from './TodoItem'
 
 export default class TodoList extends Component {
@@ -37,24 +38,32 @@ export default class TodoList extends Component {
 				<TodoListSection
 					data={ urgent_important }
 					title="Urgent, Important"
+					icon="error-outline"
+					iconSize={ 22 }
 					renderRow={ this.renderRow }
 					style={{ backgroundColor: colors.level4 }}
 				/>
 				<TodoListSection
 					data={ urgent_notimportant }
 					title="Urgent, Not Important"
+					icon="schedule"
+					iconSize={ 22 }
 					renderRow={ this.renderRow }
 					style={{ backgroundColor: colors.level3 }}
 				/>
 				<TodoListSection
 					data={ noturgent_important }
 					title="Not Urgent, Important"
+					icon="priority-high"
+					iconSize={ 20 }
 					renderRow={ this.renderRow }
 					style={{ backgroundColor: colors.level2 }}
 				/>
 				<TodoListSection
 					data={ noturgent_notimportant }
 					title="Not Urgent, Not Important"
+					icon="done"
+					iconSize={ 20 }
 					renderRow={ this.renderRow }
 					style={{ backgroundColor: colors.level1 }}
 				/>
@@ -101,6 +110,7 @@ class TodoListSection extends Component {
 		return (
 			<View style={ styles.card } >
 				<View style={ [styles.header, this.props.style] }>
+					<Icon name={ this.props.icon } color='white' size={ 36 } iconSize={ this.props.iconSize } />
 					<Text style={ styles.headerText }>{ this.props.title }</Text>
 				</View>
 				<ListView
@@ -146,22 +156,22 @@ class TodoListSection extends Component {
 
 const styles = StyleSheet.create({
 	header: {
-		height: 36,
-		paddingLeft: 12,
-		justifyContent: 'center',
+		alignItems: 'center',
+		flexDirection: 'row',
 	},
 	headerText: {
 		...style.text,
 		fontSize: 15,
 		color: 'white',
 		fontFamily: 'sans-serif-medium',
-		// fontWeight: 'bold',
+		marginLeft: 5,
+		marginBottom: 1,
 	},
 	card: {
+		marginTop: 16,
 		marginHorizontal: 16,
 		backgroundColor: 'white',
 		elevation: 2,
-		marginTop: 16,
 	},
 	footer: {
 		height: 80,

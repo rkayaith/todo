@@ -1,11 +1,11 @@
-import Icon from 'react-native-vector-icons/MaterialIcons'
+import VectorIcon from 'react-native-vector-icons/MaterialIcons'
 import React, { Component } from 'react'
 import { View, StatusBar as ReactStatusBar, StyleSheet, TouchableNativeFeedback, TouchableOpacity } from 'react-native'
 
 import { colors } from './styles'
 
 export const Toolbar = ({ style, ...props }) => (
-	<Icon.ToolbarAndroid
+	<VectorIcon.ToolbarAndroid
 		style={[ styles.toolbar, style ]}
 		elevation={ 4 }
 		contentInsetStart={ 16 }
@@ -16,7 +16,7 @@ export const Toolbar = ({ style, ...props }) => (
 export const StatusBar = (props) => (
 	<ReactStatusBar
 		animated={ true }
-		backgroundColor={ colors.grey300 }
+		backgroundColor={ colors.statusbar }
 		{ ...props }
 	/>
 )
@@ -31,20 +31,25 @@ export const Touchable = ({ style, children, ...props }) => (
 // Touchable.Ripple = TouchableNativeFeedback.Ripple
 // Touchable.SelectableBackgroundBorderless = TouchableNativeFeedback.SelectableBackgroundBorderless
 
-export const Button = ({ size, style, children, ...props}) => (
-	<Touchable style={ [styles.button, { width: size, height: size }, style] } {...props }>
-		{ children }
-	</Touchable>
+export const Icon = ({ size, iconSize, style, ...props }) => (
+	<View
+		style={ [{ width: size, height: size, justifyContent: 'center', alignItems: 'center' }, style] }>
+		<VectorIcon
+			size={ iconSize }
+			{ ...props }
+		/>
+	</View>
 )
 
 export const CheckBox = ({ value, onValueChange, ...props }) => (
-	<Button onPress={ () => onValueChange && onValueChange(!value) } { ...props }>
+	<Touchable onPress={ () => onValueChange && onValueChange(!value) } >
 		<Icon
-			size={ 20 }
+			{ ...props }
+			iconSize={ 20 }
 			color={ colors.grey800 }
 			name={ value ? "check-box" : "check-box-outline-blank" }
 		/>
-	</Button>
+	</Touchable>
 )
 
 export class ActionButton extends Component {
@@ -61,25 +66,21 @@ export class ActionButton extends Component {
 					activeOpacity={ 0.75 }
 					onPressIn={ () => this.setState({ pressed: true }) }
 					onPressOut={ () => this.setState({ pressed: false }) }>
-					<View style={ [styles.actionButton, { backgroundColor: colors.accentColor }] }>
-						<Icon name={ icon } color='white' size={ 24 }/>
-					</View>
+					<Icon
+						name={ icon }
+						color='white'
+						iconSize={ 24 }
+						style={ [styles.actionButton, { backgroundColor: colors.accentColor }] } />
 				</TouchableOpacity>
 			</View>
 		)
 	}
 }
 
-export { Icon }
-
 const styles = StyleSheet.create({
 	toolbar: {
 		height: 56,
-		backgroundColor: colors.grey100,
-	},
-	button: {
-		alignItems: 'center',
-		justifyContent: 'center',
+		backgroundColor: colors.toolbar,
 	},
 	actionButton: {
 		height: 56, width: 56, borderRadius: 56/2, backgroundColor: "white",

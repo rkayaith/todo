@@ -280,7 +280,12 @@ export const colors = {
 	...md_colors,
 	primaryColor: 		md_colors.bluegrey500,
 	primaryColorDark: 	md_colors.bluegrey700,
-	accentColor: 		md_colors.red500,
+	accentColor: 		md_colors.cyan600,
+
+	statusbar:			md_colors.grey400,
+	toolbar:			md_colors.grey200,
+	background:			md_colors.grey100,
+
 	level4: 			md_colors.red600, 		// urgent, important
 	level3: 			md_colors.orangea700, 	// urgent, not important
 	level2: 			md_colors.amber500, 	// not urgent, important
@@ -291,10 +296,9 @@ export const colors = {
 export const style = {
 	scene: {
 		flex: 1,
-		backgroundColor: colors.grey50,
+		backgroundColor: colors.background,
 		elevation: 0
 	},
-
 	text: {
 		color: colors.grey900,
 		fontSize: 15,

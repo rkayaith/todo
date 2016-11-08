@@ -4,7 +4,7 @@ import {
 	Picker, DatePickerAndroid, TimePickerAndroid,
 } from 'react-native'
 
-import { CheckBox } from '../components'
+import { CheckBox, Icon } from '../components'
 import { style, colors } from '../styles'
 
 export default class ItemEditor extends Component {
@@ -70,25 +70,34 @@ export default class ItemEditor extends Component {
 					/>
 
 					<View style={ styles.row }>
-						<Text style={ styles.text }>Checked</Text>
+						<View style={ styles.label }>
+							<Icon name="done" size={ icon_size } iconSize={ 20 }/>
+							<Text style={ styles.text }>Done</Text>
+						</View>
 						<CheckBox
-							size={ 50 }
+							size={ icon_size }
 							value={ this.props.item.checked }
 							onValueChange={ checked => this.props.change({ checked }) }
 						/>
 					</View>
 
 					<View style={ styles.row }>
-						<Text style={ styles.text }>Important</Text>
+						<View style={ styles.label }>
+							<Icon name="priority-high" size={ icon_size } iconSize={ 20 }/>
+							<Text style={ styles.text }>Important</Text>
+						</View>
 						<CheckBox
-							size={ 50 }
+							size={ icon_size }
 							value={ this.props.item.important }
 							onValueChange={ important => this.props.change({ important }) }
 						/>
 					</View>
 
 					<View style={ styles.row }>
-						<Text style={ styles.text }>Urgent</Text>
+						<View style={ styles.label }>
+							<Icon name="schedule" size={ icon_size } iconSize={ 20 }/>
+							<Text style={ styles.text }>Urgent</Text>
+						</View>
 						<Picker
 							mode='dropdown'
 							style={ styles.picker }
@@ -151,7 +160,7 @@ export default class ItemEditor extends Component {
 				(this.props.item.important ? colors.level4 : colors.level3) :
 				(this.props.item.important ? colors.level2 : colors.level1)
 			if (this.props.item.checked) {
-				bgNext += toHex(255 * 0.65) 	// apply alpha if checked
+				bgNext += toHex(255 * 0.45) 	// apply alpha if checked
 			}
 
 			// Start a new animation between the current background color and
@@ -196,6 +205,7 @@ export default class ItemEditor extends Component {
 	}
 }
 
+const icon_size = 45
 const styles = StyleSheet.create({
 	...style,
 	container: {
@@ -209,16 +219,16 @@ const styles = StyleSheet.create({
 		padding: 12
 	},
 	row: {
-		height: 50,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		borderBottomWidth: 1,
-		borderBottomColor: colors.grey200,
-		marginHorizontal: 12,
+	},
+	label: {
+		flexDirection: 'row',
+		alignItems: 'center',
 	},
 	picker: {
-		marginRight: 13,
+		marginRight: 10.5,
 		width: 250,
 	},
 	input: {
