@@ -21,32 +21,33 @@ export const StatusBar = (props) => (
 	/>
 )
 
-export const Touchable = ({ style, children, ...props }) => (
+export const Touchable = ({ style, children, ripple, borderless, ...props }) => (
 	<TouchableNativeFeedback
-		background={ TouchableNativeFeedback.Ripple() }
+		background={ TouchableNativeFeedback.Ripple(colors.alpha(ripple, 0.26), borderless) }
 		{ ...props } >
 		<View style={ style }>{ children }</View>
 	</TouchableNativeFeedback>
 )
-// Touchable.Ripple = TouchableNativeFeedback.Ripple
-// Touchable.SelectableBackgroundBorderless = TouchableNativeFeedback.SelectableBackgroundBorderless
 
-export const Icon = ({ size, iconSize, style, ...props }) => (
+export const Icon = ({ size, iconSize, style, alpha, color, ...props }) => (
 	<View
 		style={ [{ width: size, height: size, justifyContent: 'center', alignItems: 'center' }, style] }>
 		<VectorIcon
+			color={ colors.alpha(color || colors.grey800, alpha) }
 			size={ iconSize }
 			{ ...props }
 		/>
 	</View>
 )
 
-export const CheckBox = ({ value, onValueChange, ...props }) => (
-	<Touchable onPress={ () => onValueChange && onValueChange(!value) } >
+export const CheckBox = ({ value, ripple, borderless, onValueChange, ...props }) => (
+	<Touchable
+		ripple={ ripple }
+		borderless={ borderless }
+		onPress={ () => onValueChange && onValueChange(!value) } >
 		<Icon
 			{ ...props }
 			iconSize={ 20 }
-			color={ colors.grey800 }
 			name={ value ? "check-box" : "check-box-outline-blank" }
 		/>
 	</Touchable>
@@ -68,7 +69,7 @@ export class ActionButton extends Component {
 					onPressOut={ () => this.setState({ pressed: false }) }>
 					<Icon
 						name={ icon }
-						color='white'
+						color={ colors.white }
 						iconSize={ 24 }
 						style={ [styles.actionButton, { backgroundColor: colors.accentColor }] } />
 				</TouchableOpacity>
@@ -83,7 +84,7 @@ const styles = StyleSheet.create({
 		backgroundColor: colors.toolbar,
 	},
 	actionButton: {
-		height: 56, width: 56, borderRadius: 56/2, backgroundColor: "white",
+		height: 56, width: 56, borderRadius: 56/2, backgroundColor: colors.white,
 		alignItems: 'center', justifyContent: 'center',
 	},
 	actionButtonLayout: {

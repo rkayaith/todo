@@ -2,6 +2,10 @@ import { StyleSheet } from 'react-native'
 
 // material design colors
 const md_colors = {
+
+	white: "#ffffff",
+	black: "#000000",
+
 	"red50": "#ffebee",
     "red100": "#ffcdd2",
     "red200": "#ef9a9a",
@@ -290,6 +294,14 @@ export const colors = {
 	level3: 			md_colors.orangea700, 	// urgent, not important
 	level2: 			md_colors.amber500, 	// not urgent, important
 	level1: 			md_colors.green500, 	// not urgent, not important
+
+	// applies alpha to a color
+	// accepts forms: #rrggbb, rrggbb
+	alpha: (color, alpha) => {
+		if (!color) return
+		if (!alpha) return color
+		return color + parseInt(255 * alpha).toString(16)
+	}
 }
 
 // import this object to combine certain style properties

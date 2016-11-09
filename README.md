@@ -3,7 +3,20 @@ Written in JavaScript with React Native.
 
 
 TODO:
-- notifications
-- make everything pretty
-- figure out why elevation property (material shadows) aren't working
-- improve animations (use Animated API instead of LayoutAnimation)
+
+	Features:
+		- notifications
+		- countdown to urgent date in list
+		- auto refresh
+
+	UX:
+		- convert action button to use TouchableNativeFeedback
+		- improve item editor behaviour when keyboard is open
+		- clean up item editor urgent picker
+		- fix TouchableNativeFeedback bug where checking off an item that
+			moves as a result won't show release feedback
+		- control borderless Touchable size
+		- improve animations (use Animated API instead of LayoutAnimation)
+
+	- refactor item data structure
+	- refactor item list data structure

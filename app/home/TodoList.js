@@ -41,7 +41,7 @@ export default class TodoList extends Component {
 					icon="error-outline"
 					iconSize={ 22 }
 					renderRow={ this.renderRow }
-					style={{ backgroundColor: colors.level4 }}
+					color={ colors.level4 }
 				/>
 				<TodoListSection
 					data={ urgent_notimportant }
@@ -49,7 +49,7 @@ export default class TodoList extends Component {
 					icon="schedule"
 					iconSize={ 22 }
 					renderRow={ this.renderRow }
-					style={{ backgroundColor: colors.level3 }}
+					color={ colors.level3 }
 				/>
 				<TodoListSection
 					data={ noturgent_important }
@@ -57,7 +57,7 @@ export default class TodoList extends Component {
 					icon="priority-high"
 					iconSize={ 20 }
 					renderRow={ this.renderRow }
-					style={{ backgroundColor: colors.level2 }}
+					color={ colors.level2 }
 				/>
 				<TodoListSection
 					data={ noturgent_notimportant }
@@ -65,7 +65,7 @@ export default class TodoList extends Component {
 					icon="done"
 					iconSize={ 20 }
 					renderRow={ this.renderRow }
-					style={{ backgroundColor: colors.level1 }}
+					color={ colors.level1 }
 				/>
 
 				<View
@@ -76,11 +76,12 @@ export default class TodoList extends Component {
 		)
 	}
 
-	renderRow = (item, sectionID, rowID) => {
+	renderRow = (color, item, sectionID, rowID) => {
 		return (
 			<TodoItem
 				{ ...item }
 				key={ rowID }
+				color={ color }
 				change={ this.props.changeItem.bind(null, rowID) }
 				delete={ this.props.deleteItem.bind(null, rowID) }
 				edit={ this.props.goToEditItem.bind(null, rowID) }
@@ -109,13 +110,18 @@ class TodoListSection extends Component {
 	render() {
 		return (
 			<View style={ styles.card } >
-				<View style={ [styles.header, this.props.style] }>
-					<Icon name={ this.props.icon } color='white' size={ 36 } iconSize={ this.props.iconSize } />
+				<View style={ [styles.header, { backgroundColor: this.props.color }] }>
+					<Icon
+						name={ this.props.icon }
+						color={ colors.alpha(colors.white, 0.87) }
+						size={ 36 }
+						iconSize={ this.props.iconSize }
+					/>
 					<Text style={ styles.headerText }>{ this.props.title }</Text>
 				</View>
 				<ListView
 					dataSource={ this.state.ds }
-					renderRow={ this.props.renderRow }
+					renderRow={ this.props.renderRow.bind(null, this.props.color) }
 					enableEmptySections={ true }
 				/>
 			</View>
@@ -162,7 +168,7 @@ const styles = StyleSheet.create({
 	headerText: {
 		...style.text,
 		fontSize: 15,
-		color: 'white',
+		color: colors.alpha(colors.white, 0.87),
 		fontFamily: 'sans-serif-medium',
 		marginLeft: 5,
 		marginBottom: 1,
@@ -170,7 +176,7 @@ const styles = StyleSheet.create({
 	card: {
 		marginTop: 16,
 		marginHorizontal: 16,
-		backgroundColor: 'white',
+		backgroundColor: colors.white,
 		elevation: 2,
 	},
 	footer: {

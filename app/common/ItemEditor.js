@@ -159,9 +159,8 @@ export default class ItemEditor extends Component {
 			let bgNext = this.props.item.urgent < Date.now() ?
 				(this.props.item.important ? colors.level4 : colors.level3) :
 				(this.props.item.important ? colors.level2 : colors.level1)
-			if (this.props.item.checked) {
-				bgNext += toHex(255 * 0.45) 	// apply alpha if checked
-			}
+			// apply alpha if checked
+			bgNext = colors.alpha(bgNext, this.props.item.checked ? 0.45 : 1)
 
 			// Start a new animation between the current background color and
 			this.setState({ bgValue, bgPrev, bgNext })
@@ -175,22 +174,25 @@ export default class ItemEditor extends Component {
 			return '#' + [[0, 2], [2, 4], [4, 6], [6, 8]]
 				.map(section => interp(color1, color2, interpValue, section))
 				.join('')
+
+			function interp(hex1, hex2, interpValue, section) {
+				let int1 = toInt(hex1.substring(...section))
+				let int2 = toInt(hex2.substring(...section))
+				return toHex(int1 + (int2 - int1) * interpValue)
+			}
+			function toInt(hex) {
+				if (!hex) return 255 	// if alpha is omitted its value is 255
+				return parseInt(hex, 16)
+			}
+			function toHex(int) {
+				int = parseInt(int)
+				let hex = int.toString(16)
+				return hex.length > 1 ? hex : '0' + hex
+			}
 		}
 
-		function interp(hex1, hex2, interpValue, section) {
-			let int1 = toInt(hex1.substring(...section))
-			let int2 = toInt(hex2.substring(...section))
-			return toHex(int1 + (int2 - int1) * interpValue)
-		}
-		function toInt(hex) {
-			if (!hex) return 255 	// if alpha is omitted its value is 255
-			return parseInt(hex, 16)
-		}
-		function toHex(int) {
-			int = parseInt(int)
-			let hex = int.toString(16)
-			return hex.length > 1 ? hex : '0' + hex
-		}
+
+
 	}
 
 	parseDate = (dateNum) => {
@@ -215,7 +217,7 @@ const styles = StyleSheet.create({
 	card: {
 		flex: 1,
 		elevation: 2,
-		backgroundColor: 'white',
+		backgroundColor: colors.white,
 		padding: 12
 	},
 	row: {
