@@ -1,6 +1,6 @@
 import VectorIcon from 'react-native-vector-icons/MaterialIcons'
 import React, { Component } from 'react'
-import { View, StatusBar as ReactStatusBar, StyleSheet, TouchableNativeFeedback, TouchableOpacity } from 'react-native'
+import { View, StatusBar as ReactStatusBar, StyleSheet, TouchableNativeFeedback } from 'react-native'
 
 import { colors } from './styles'
 
@@ -62,17 +62,19 @@ export class ActionButton extends Component {
 				styles.actionButton,
 				styles.actionButtonLayout,
 				{ elevation: this.state.pressed ? 12 : 6 } ]}>
-				<TouchableOpacity
+				<Touchable
 					{ ...props }
-					activeOpacity={ 0.75 }
+					ripple={ colors.white }
+					borderless={ true }
 					onPressIn={ () => this.setState({ pressed: true }) }
-					onPressOut={ () => this.setState({ pressed: false }) }>
+					onPressOut={ () => this.setState({ pressed: false }) } >
 					<Icon
 						name={ icon }
 						color={ colors.white }
+						style={ styles.actionButton }
 						iconSize={ 24 }
-						style={ [styles.actionButton, { backgroundColor: colors.accentColor }] } />
-				</TouchableOpacity>
+					/>
+				</Touchable>
 			</View>
 		)
 	}
@@ -84,10 +86,9 @@ const styles = StyleSheet.create({
 		backgroundColor: colors.toolbar,
 	},
 	actionButton: {
-		height: 56, width: 56, borderRadius: 56/2, backgroundColor: colors.white,
-		alignItems: 'center', justifyContent: 'center',
+		height: 56, width: 56, borderRadius: 56/2,
 	},
 	actionButtonLayout: {
-		position: 'absolute', bottom: 16, right: 16,
+		position: 'absolute', bottom: 16, right: 16, backgroundColor: colors.accentColor,
 	}
 })

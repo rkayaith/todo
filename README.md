@@ -10,7 +10,6 @@ TODO:
 		- auto refresh
 
 	UX:
-		- convert action button to use TouchableNativeFeedback
 		- improve item editor behaviour when keyboard is open
 		- clean up item editor urgent picker
 		- fix TouchableNativeFeedback bug where checking off an item that
