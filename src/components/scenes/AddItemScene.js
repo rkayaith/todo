@@ -6,14 +6,13 @@ import ItemEditor from '../editor/ItemEditor'
 import { style, colors } from '../styles'
 import { Toolbar, StatusBar, Touchable } from '../components'
 
-
-const defaultItem = { text: "", checked: false, urgent: Infinity, important: false }
+import * as Item from '../../modules/Item'
 
 export default class AddItemScene extends Component {
 
-	state = defaultItem
+	state = Item.emptyItem()
 	componentWillReceiveProps(props) {
-		this.setState(defaultItem)
+		this.setState(Item.emptyItem())
 	}
 
 	render() {

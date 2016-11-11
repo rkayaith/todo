@@ -4,8 +4,10 @@ import {
 	Picker, DatePickerAndroid, TimePickerAndroid,
 } from 'react-native'
 
-import { CheckBox, Icon } from '../components'
 import { style, colors } from '../styles'
+import { CheckBox, Icon } from '../components'
+
+import * as Item from '../../modules/Item'
 
 export default class ItemEditor extends Component {
 
@@ -156,9 +158,7 @@ export default class ItemEditor extends Component {
 			// and how far it got into the animation
 			let bgValue = new Animated.Value(0)
 			let bgPrev = interpolate(this.state.bgPrev, this.state.bgNext, value)
-			let bgNext = this.props.item.urgent < Date.now() ?
-				(this.props.item.important ? colors.level4 : colors.level3) :
-				(this.props.item.important ? colors.level2 : colors.level1)
+			let bgNext = Item.color(this.props.item)
 			// apply alpha if checked
 			bgNext = colors.alpha(bgNext, this.props.item.checked ? 0.45 : 1)
 
@@ -190,9 +190,6 @@ export default class ItemEditor extends Component {
 				return hex.length > 1 ? hex : '0' + hex
 			}
 		}
-
-
-
 	}
 
 	parseDate = (dateNum) => {

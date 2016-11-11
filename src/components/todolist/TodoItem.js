@@ -4,12 +4,15 @@ import { View, Text, TextInput, StyleSheet, TouchableNativeFeedback } from 'reac
 import { style, colors } from '../styles'
 import { Touchable, CheckBox, Icon } from '../components'
 
+import * as Item from '../../modules/Item'
+
 export default class TodoItem extends Component {
     render() {
-        let alpha = this.props.checked === true ? 0.5 : 1
+        let alpha = this.props.checked ? 0.5 : 1
+        let color = Item.color(this.props)
         return (
             <Touchable
-                ripple={ this.props.color }
+                ripple={ color }
                 onPress={ this.props.edit }
                 style={ [styles.container] }>
 
@@ -17,7 +20,7 @@ export default class TodoItem extends Component {
                     size={ 36 }
                     alpha={ alpha }
                     value={ this.props.checked }
-                    ripple={ this.props.color }
+                    ripple={ color }
                     borderless={ true }
                     onValueChange={ checked => this.props.change({ checked }) } />
 
@@ -31,7 +34,7 @@ export default class TodoItem extends Component {
                     { this.props.text }
                 </Text>
 
-                <Touchable ripple={ this.props.color } borderless={ true } onPress={ this.props.remove }>
+                <Touchable ripple={ color } borderless={ true } onPress={ this.props.remove }>
                     <Icon name="clear" size={ 36 } iconSize={ 15 } alpha={ alpha * 0.75 }/>
                 </Touchable>
             </Touchable>

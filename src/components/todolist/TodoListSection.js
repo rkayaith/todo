@@ -1,8 +1,12 @@
 import React, { Component } from 'react'
 import { View, Text, ListView, StyleSheet } from 'react-native'
 
+import TodoItem from './TodoItem'
+
 import { style, colors } from '../styles'
 import { Icon } from '../components'
+
+import * as Item from '../../modules/Item'
 
 export default class TodoListSection extends Component {
 	constructor(props) {
@@ -22,18 +26,17 @@ export default class TodoListSection extends Component {
 	render() {
 		return (
 			<View style={ styles.card } >
-				<View style={ [styles.header, { backgroundColor: this.props.color }] }>
+				<View style={ [styles.header, { backgroundColor: Item.color(this.props.level) }] }>
 					<Icon
-						name={ this.props.icon }
-						color={ colors.alpha(colors.white, 0.87) }
+						{ ...Item.icon(this.props.level) }
 						size={ 36 }
-						iconSize={ this.props.iconSize }
+						color={ colors.alpha(colors.white, 0.87) }
 					/>
-					<Text style={ styles.headerText }>{ this.props.title }</Text>
+					<Text style={ styles.headerText }>{ Item.description(this.props.level) }</Text>
 				</View>
 				<ListView
 					dataSource={ this.state.ds }
-					renderRow={ this.props.renderRow.bind(null, this.props.color) }
+					renderRow={ this.renderRow }
 					enableEmptySections={ true }
 				/>
 			</View>
@@ -68,6 +71,18 @@ export default class TodoListSection extends Component {
 		delete data.checked
 
 		return data
+	}
+
+	renderRow = (item, sectionID, rowID) => {
+		return (
+			<TodoItem
+				{ ...item }
+				key={ rowID }
+				change={ this.props.changeItem.bind(null, rowID) }
+				remove={ this.props.removeItem.bind(null, rowID) }
+				edit={ this.props.goToEditItem.bind(null, rowID) }
+			/>
+		)
 	}
 
 }
