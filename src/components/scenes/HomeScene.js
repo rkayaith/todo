@@ -4,7 +4,7 @@ import { View, ScrollView, Text } from 'react-native'
 import styles, { colors } from '../styles'
 import { Toolbar, StatusBar, ActionButton } from '../components'
 
-import TodoList from './TodoList'
+import TodoList from '../todolist/TodoList'
 
 export default class HomeScene extends Component {
 	render() {

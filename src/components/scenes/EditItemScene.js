@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View } from 'react-native'
 
-import ItemEditor from '../common/ItemEditor'
+import ItemEditor from '../editor/ItemEditor'
 
 import styles from '../styles'
 import { Toolbar, StatusBar } from '../components'

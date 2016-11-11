@@ -2,11 +2,11 @@ import React, { Component } from 'react'
 import { Navigator } from 'react-native'
 import { View, Text, AsyncStorage, StyleSheet, UIManager, LayoutAnimation } from 'react-native'
 
-import HomeScene from './home/HomeScene'
-import AddItemScene from './add-item/AddItemScene'
-import EditItemScene from './edit-item/EditItemScene'
+import HomeScene from './scenes/HomeScene'
+import AddItemScene from './scenes/AddItemScene'
+import EditItemScene from './scenes/EditItemScene'
 
-import mock_data from './MOCK_DATA'
+import mock_data from '../modules/MOCK_DATA'
 
 import styles from './styles'
 
