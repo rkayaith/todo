@@ -6,6 +6,7 @@ import TodoListSection from './TodoListSection'
 import { colors } from '../styles'
 
 import * as Item from '../../modules/Item'
+import * as Data from '../../modules/Data'
 
 export default class TodoList extends Component {
 
@@ -17,46 +18,31 @@ export default class TodoList extends Component {
 			goToEditItem: this.props.goToEditItem,
 		}
 
-		let urgent_important = {}
-		let urgent_notimportant = {}
-		let noturgent_important = {}
-		let noturgent_notimportant = {}
-
-		for (id in this.props.data) {
-			let item = this.props.data[id]
-			switch(Item.level(item)) {
-				case 4: urgent_important[id] = item; break;
-				case 3: urgent_notimportant[id] = item; break;
-				case 2: noturgent_important[id] = item; break;
-				case 1: noturgent_notimportant[id] = item; break;
-			}
-		}
-
 		return (
 			<ScrollView>
 				<TodoListSection
 					{ ...fns }
-					data={ urgent_important }
 					level={ 4 }
 					renderRow={ this.renderRow }
+					data={ Data.filter(this.props.data, item => Item.level(item) === 4) }
 				/>
 				<TodoListSection
 					{ ...fns }
-					data={ urgent_notimportant }
 					level={ 3 }
 					renderRow={ this.renderRow }
+					data={ Data.filter(this.props.data, item => Item.level(item) === 3) }
 				/>
 				<TodoListSection
 					{ ...fns }
-					data={ noturgent_important }
 					level={ 2 }
 					renderRow={ this.renderRow }
+					data={ Data.filter(this.props.data, item => Item.level(item) === 2) }
 				/>
 				<TodoListSection
 					{ ...fns }
-					data={ noturgent_notimportant }
 					level={ 1 }
 					renderRow={ this.renderRow }
+					data={ Data.filter(this.props.data, item => Item.level(item) === 1) }
 				/>
 
 				<View

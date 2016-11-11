@@ -1,5 +1,7 @@
 import { AsyncStorage } from 'react-native'
 
+import * as Item from './Item'
+
 /**
  * Functions for working with our data structure
  * Data is an object who's keys are ids and values are todo items:
@@ -9,11 +11,20 @@ import { AsyncStorage } from 'react-native'
  *   }
  */
 
+// Query data
+export function keys(data) {
+	return Object.keys(data)
+}
+
+export function values(data) {
+	return Object.keys(data).map(key => data[key])
+}
+
 
 // Modify data
-export function add(data, value) {
+export function add(data, item) {
 	data = clone(data)
-	data[uuid()] = value
+	data[Item.id(item)] = item
 	return data
 }
 
@@ -33,6 +44,13 @@ export function remove(data, ids) {
 	return data
 }
 
+export function filter(data, filterFn) {
+	return fromArr(values(data).filter(filterFn))
+}
+
+export function sort(data, sortFn) {
+	return fromArr(values(data).sort(sortFn))
+}
 
 // Get/Set data from/in AsyncStorage
 export async function getStoredData() {
@@ -62,17 +80,20 @@ export function emptyData() {
 }
 
 export function mockData() {
-	return {
-		"e1174392-9c0a-4197-80cb-0a8a59c74c65": { text: 'urgent important', checked: true, urgent: 0, important: true },
-		"f9228358-339b-4982-a527-803cffc4b8c0": { text: 'urgent important2', checked: false, urgent: 0, important: true },
-		"3c1f07c3-1fcc-4ec9-8650-b306b3f4bc60": { text: 'urgent important3', checked: true, urgent: 0, important: true },
-		"f0bc850e-d6ec-430b-98cd-89062299d4aa": { text: 'urgent not important', checked: true, urgent: 0, important: false },
-		"867ce7ba-8a90-40c2-8cbf-ec0246383c57": { text: 'urgent not important2', checked: false, urgent: 0, important: false },
-		"9c1f2928-42f9-4978-96bf-b4601ef589d9": { text: 'not urgent important', checked: true, urgent: Infinity, important: true },
-		"6d7187b9-a27b-4c72-a150-b0a0837c5827": { text: 'not urgent important2', checked: false, urgent: Infinity, important: true },
-		"8043c5ba-f028-4cf4-bd9f-38308bb528a1": { text: 'not urgent not important', checked: true, urgent: Infinity, important: false },
-		"8c3bb2fe-2398-4f76-bb2d-e7791ac3c06a": { text: 'not urgent not important2', checked: false, urgent: Infinity, important: false },
-	}
+	return fromArr(
+		[
+			{ text: 'urgent important', checked: true, urgent: 0, important: true },
+			{ text: 'urgent important2', checked: false, urgent: 0, important: true },
+			{ text: 'urgent important3', checked: true, urgent: 0, important: true },
+			{ text: 'urgent not important', checked: true, urgent: 0, important: false },
+			{ text: 'urgent not important2', checked: false, urgent: 0, important: false },
+			{ text: 'not urgent important', checked: true, urgent: Infinity, important: true },
+			{ text: 'not urgent important2', checked: false, urgent: Infinity, important: true },
+			{ text: 'not urgent not important', checked: true, urgent: Infinity, important: false },
+			{ text: 'not urgent not important2', checked: false, urgent: Infinity, important: false },
+		]
+		.map(itemInfo => ({ ...Item.emptyItem(), ...itemInfo }) )
+	)
 }
 
 
@@ -81,10 +102,9 @@ function clone(data) {
 	return Object.assign({}, data)
 }
 
-function uuid() {
-    // http://stackoverflow.com/a/2117523
-	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-	    var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8)
-	    return v.toString(16)
-	})
+function fromArr(arr) {
+	return arr.reduce((data, item) => {
+		data[Item.id(item)] = item
+		return data
+	}, emptyData())
 }

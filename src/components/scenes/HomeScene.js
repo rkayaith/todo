@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
 import { View, ScrollView, Text } from 'react-native'
 
+import TodoList from '../todolist/TodoList'
+
 import styles, { colors } from '../styles'
 import { Toolbar, StatusBar, ActionButton } from '../components'
 
-import TodoList from '../todolist/TodoList'
+import * as Data from '../../modules/Data'
+import * as Item from '../../modules/Item'
 
 export default class HomeScene extends Component {
 	render() {
@@ -26,14 +29,12 @@ export default class HomeScene extends Component {
 							case 0:
 								// check all items in the list
 								return this.props.changeItem(
-									Object.keys(this.props.data),
-									{ checked: true }
+									Data.keys(this.props.data),	{ checked: true }
 								)
 							case 1:
 								// remove all checked items in the list
 								return this.props.removeItem(
-									Object.keys(this.props.data)
-										.filter(id => this.props.data[id].checked)
+									Data.keys(Data.filter(this.props.data, Item.isChecked))
 								)
 							case 2:
 								return this.props.resetData()

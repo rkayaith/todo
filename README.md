@@ -4,10 +4,13 @@ Written in JavaScript with React Native.
 
 TODO:
 
+	- check if performance has degraded
+
 	Features:
 		- notifications
 		- countdown to urgent date in list
 		- auto refresh
+		- undo button
 
 	UX:
 		- improve item editor behaviour when keyboard is open
@@ -16,6 +19,3 @@ TODO:
 			moves as a result won't show release feedback
 		- control borderless Touchable size
 		- improve animations (use Animated API instead of LayoutAnimation)
-
-	- refactor item data structure
-	- refactor item list data structure

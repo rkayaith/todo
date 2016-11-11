@@ -4,6 +4,7 @@ import { colors } from '../components/styles'
  * Functions for working with our todo items
  * Item structure:
  *   item = {
+ *     id: string (uuid string)
  *     text: string,
  *     checked: bool,
  *     urgent: number | Infinity (unix timestamp for when item becomes urgent, Infinity for never)
@@ -12,9 +13,28 @@ import { colors } from '../components/styles'
  */
 
 
+// Create item
+export function fromObj(obj) {
+	let { id, checked, urgent, important } = obj
+	// Replace -Infinity with current date
+	if (urgent === -Infinity) {
+		urgent = Date.now()
+	}
+	return { id, checked, urgent, important }
+}
+
+
 // Query item
+export function id(item) {
+	return item.id
+}
+
+export function isChecked(item) {
+	return item.checked
+}
+
 export function isUrgent(item) {
-	return item.urgent < Date.now()
+	return item.urgent <= Date.now()
 }
 
 export function isImportant(item) {
@@ -35,6 +55,26 @@ export function level(item) {
 			return 1
 		}
 	}
+}
+
+export function sort(item1, item2) {
+	if (level(item1) !== level(item2)) {
+		// higher level goes first
+		return level(item2) - level(item1)
+	}
+	if (isChecked(item1) !== isChecked(item2)) {
+		// checked items go first
+		if (isChecked(item1)) {
+			return 1
+		} else if (isChecked(item2)) {
+			return -1
+		}
+	}
+	if (item1.urgent !== item2.urgent) {
+		// earlier urgent date goes first
+		return item1.urgent - item2.urgent
+	}
+	return 0
 }
 
 
@@ -77,6 +117,7 @@ export function description(itemOrLevel) {
 // Default structure
 export function emptyItem() {
 	return {
+		id: uuid(),
 		text: "",
 		checked: false,
 		urgent: Infinity,
@@ -85,11 +126,19 @@ export function emptyItem() {
 }
 
 
-// Helper
+// Helpers
 function toLevel(itemOrLevel) {
 	if (Number.isInteger(itemOrLevel)) {
 		return itemOrLevel
 	} else {
 		return level(itemOrLevel)
 	}
+}
+
+function uuid() {
+    // http://stackoverflow.com/a/2117523
+	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+	    var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8)
+	    return v.toString(16)
+	})
 }

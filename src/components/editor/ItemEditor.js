@@ -73,7 +73,7 @@ export default class ItemEditor extends Component {
 
 					<View style={ styles.row }>
 						<View style={ styles.label }>
-							<Icon name="done" size={ icon_size } iconSize={ 20 }/>
+							<Icon { ...Item.icon(1) } size={ icon_size } iconSize={ 20 }/>
 							<Text style={ styles.text }>Done</Text>
 						</View>
 						<CheckBox
@@ -85,7 +85,7 @@ export default class ItemEditor extends Component {
 
 					<View style={ styles.row }>
 						<View style={ styles.label }>
-							<Icon name="priority-high" size={ icon_size } iconSize={ 20 }/>
+							<Icon { ...Item.icon(2) } size={ icon_size } iconSize={ 20 }/>
 							<Text style={ styles.text }>Important</Text>
 						</View>
 						<CheckBox
@@ -97,7 +97,7 @@ export default class ItemEditor extends Component {
 
 					<View style={ styles.row }>
 						<View style={ styles.label }>
-							<Icon name="schedule" size={ icon_size } iconSize={ 20 }/>
+							<Icon { ...Item.icon(4) } size={ icon_size } iconSize={ 20 }/>
 							<Text style={ styles.text }>Urgent</Text>
 						</View>
 						<Picker

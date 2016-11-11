@@ -7,20 +7,20 @@ import { style, colors } from '../styles'
 import { Icon } from '../components'
 
 import * as Item from '../../modules/Item'
+import * as Data from '../../modules/Data'
 
 export default class TodoListSection extends Component {
 	constructor(props) {
 		super(props)
-		let ds = new ListView.DataSource({
+		let ds = this.cloneDataSource(new ListView.DataSource({
 			rowHasChanged: (a, b) => a !== b,
-			sectionHeaderHasChanged: (a, b) => a !== b
-		}).cloneWithRowsAndSections(this.sortData(props.data))
+		}), props.data)
 
 		this.state = { ds }
 	}
 
 	componentWillReceiveProps(props) {
-		this.setState({ ds: this.state.ds.cloneWithRowsAndSections(this.sortData(props.data)) })
+		this.setState({ ds: this.cloneDataSource(this.state.ds, props.data) })
 	}
 
 	render() {
@@ -43,34 +43,9 @@ export default class TodoListSection extends Component {
 		)
 	}
 
-	sortData = (_data) => {
-		let data = {
-			unchecked: {},
-			checked: {}
-		}
-		for (id in _data) {
-			if (!_data[id].checked) {
-				data.unchecked[id] = _data[id]
-			} else {
-				data.checked[id] = _data[id]
-			}
-		}
-
-		// LayoutAnimation doesn't play nice with multiple sections, so merge everything into one
-		// TODO: clean this up if we're sticking with LayoutAnimation
-		data.all = {}
-		for (id in data.unchecked) {
-			data.all[id] = data.unchecked[id]
-			delete data.unchecked[id]
-		}
-		for (id in data.checked) {
-			data.all[id] = data.checked[id]
-			delete data.checked[id]
-		}
-		delete data.unchecked
-		delete data.checked
-
-		return data
+	cloneDataSource = (ds, data) => {
+		data = Data.sort(data, Item.sort)
+		return ds.cloneWithRows(data)
 	}
 
 	renderRow = (item, sectionID, rowID) => {

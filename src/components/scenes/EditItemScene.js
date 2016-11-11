@@ -6,6 +6,8 @@ import ItemEditor from '../editor/ItemEditor'
 import styles from '../styles'
 import { Toolbar, StatusBar } from '../components'
 
+import * as Item from '../../modules/Item'
+
 export default class EditItemScene extends Component {
 
 	constructor(props) {
@@ -44,12 +46,7 @@ export default class EditItemScene extends Component {
 	}
 
 	done = () => {
-		let item = { ...this.state }
-		// Replace -Infinity with the current date
-		if (item.urgent === -Infinity) {
-			item.urgent = Date.now()
-		}
-		this.props.change(item)
+		this.props.change(Item.fromObj(this.state))
 		this.props.navigator.pop()
 	}
 }

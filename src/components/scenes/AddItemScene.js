@@ -41,12 +41,7 @@ export default class AddItemScene extends Component {
 	}
 
 	done = () => {
-		let item = { ...this.state }
-		// Replace -Infinity with the current date
-		if (item.urgent === -Infinity) {
-			item.urgent = Date.now()
-		}
-		this.props.addItem(item)
+		this.props.addItem(Item.fromObj(this.state))
 		this.props.navigator.pop()
 	}
 }
