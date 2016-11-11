@@ -18,7 +18,7 @@ export default class HomeScene extends Component {
 					overflowIconName="more-vert"
 					actions={[
 						{ title: "Check all items", iconName: "done-all", show: 'always' },
-						{ title: "Delete checked items", iconName: "delete-sweep", show: 'always' },
+						{ title: "Remove checked items", iconName: "delete-sweep", show: 'always' },
 						{ title: "Load mock data", show: 'never' },
 					]}
 					onActionSelected={ action => {
@@ -30,8 +30,8 @@ export default class HomeScene extends Component {
 									{ checked: true }
 								)
 							case 1:
-								// delete all checked items in the list
-								return this.props.deleteItem(
+								// remove all checked items in the list
+								return this.props.removeItem(
 									Object.keys(this.props.data)
 										.filter(id => this.props.data[id].checked)
 								)
@@ -43,7 +43,7 @@ export default class HomeScene extends Component {
 				<TodoList
 					data={ this.props.data }
 					changeItem={ this.props.changeItem }
-					deleteItem={ this.props.deleteItem }
+					removeItem={ this.props.removeItem }
 					goToEditItem={ this.goToEditItem }
 				/>
 

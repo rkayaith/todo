@@ -6,25 +6,26 @@ import HomeScene from './scenes/HomeScene'
 import AddItemScene from './scenes/AddItemScene'
 import EditItemScene from './scenes/EditItemScene'
 
-import mock_data from '../modules/MOCK_DATA'
+import * as Data from '../modules/Data'
 
 import styles from './styles'
 
 export default class TodoApp extends Component {
-    state = { data: {} }
+    state = { data: Data.emptyData() }
 
     constructor(props) {
         super(props)
         UIManager.setLayoutAnimationEnabledExperimental(true)
     }
 
-    componentDidMount() {
-        this.getStoredData()
+    async componentDidMount() {
+        this.setData(await Data.getStoredData())
     }
 
     componentWillUpdate(props, state) {
         if (state.data !== this.state.data) {
-            this.setStoredData(state.data)
+            Data.setStoredData(state.data)
+            LayoutAnimation.easeInEaseOut()
         }
     }
 
@@ -39,15 +40,15 @@ export default class TodoApp extends Component {
                         case 'home': return (
                             <HomeScene
                                 data={ this.state.data }
-                                changeItem={ this.changeItem }
-                                deleteItem={ this.deleteItem }
-                                resetData= { this.resetData }
+                                changeItem={ (...args) => this.setData(Data.change(this.data(), ...args)) }
+                                removeItem={ (...args) => this.setData(Data.remove(this.data(), ...args)) }
+                                resetData={ () => this.setData(Data.mockData()) }
                                 navigator={ navigator }
                             />
                         )
                         case 'add-item': return (
                             <AddItemScene
-                                addItem={ this.addItem }
+                                addItem={ item => this.setData(Data.add(this.data(), item)) }
                                 navigator={ navigator }
                             />
                         )
@@ -56,8 +57,8 @@ export default class TodoApp extends Component {
                             // that has the id of the item to edit
                             <EditItemScene
                                 item={ this.state.data[route.itemId] }
-                                change={ this.changeItem.bind(null, route.itemId) }
-                                delete={ this.deleteItem.bind(null, route.itemId) }
+                                change={ changes => this.setData(Data.change(this.data(), route.itemId, changes)) }
+                                remove={ () => this.setData(Data.remove(this.data(), route.itemId)) }
                                 navigator={ navigator }
                             />
                         )
@@ -69,64 +70,11 @@ export default class TodoApp extends Component {
         )
     }
 
-    layoutAnimation = () => {
-        LayoutAnimation.easeInEaseOut()
+    data = () => {
+        return this.state.data
     }
 
-    getStoredData = async () => {
-        let data = JSON.parse(await AsyncStorage.getItem('data'))
-        if (data) {
-            console.log('TodoApp.getStoredData: got data from storage')
-            // value of Infinity gets stored as null when stringified, so we restore it
-            for (let id in data) {
-                if (data[id].urgent === null) {
-                    data[id].urgent = Infinity
-                }
-            }
-            this.setState({ data })
-        }
-    }
-
-    setStoredData = async (data) => {
-        await AsyncStorage.setItem('data', JSON.stringify(data))
-        console.log("TodoApp.setStoredData: set data in storage")
-    }
-
-    addItem = (item) => {
-        let data = Object.assign({}, this.state.data)
-        data[uuid()] = item
-        this.layoutAnimation()
+    setData = (data) => {
         this.setState({ data })
     }
-
-    changeItem = (ids, changes) => {
-		let data = Object.assign({}, this.state.data)
-        for (id of [].concat(ids)) {
-            data[id] = { ...data[id], ...changes }
-        }
-        this.layoutAnimation()
-		this.setState({ data })
-	}
-
-    deleteItem = (ids) => {
-        let data = Object.assign({}, this.state.data)
-        for (id of [].concat(ids)) {
-            delete data[id]
-        }
-        this.layoutAnimation()
-        this.setState({ data })
-    }
-
-    resetData = () => {
-        this.layoutAnimation()
-        this.setState({ data: mock_data })
-    }
-}
-
-function uuid() {
-    // http://stackoverflow.com/a/2117523
-	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-	    var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8)
-	    return v.toString(16)
-	})
 }

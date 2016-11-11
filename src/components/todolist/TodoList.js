@@ -84,7 +84,7 @@ export default class TodoList extends Component {
 				key={ rowID }
 				color={ color }
 				change={ this.props.changeItem.bind(null, rowID) }
-				delete={ this.props.deleteItem.bind(null, rowID) }
+				remove={ this.props.removeItem.bind(null, rowID) }
 				edit={ this.props.goToEditItem.bind(null, rowID) }
 			/>
 		)

@@ -31,7 +31,7 @@ export default class TodoItem extends Component {
                     { this.props.text }
                 </Text>
 
-                <Touchable ripple={ this.props.color } borderless={ true } onPress={ this.props.delete }>
+                <Touchable ripple={ this.props.color } borderless={ true } onPress={ this.props.remove }>
                     <Icon name="clear" size={ 36 } iconSize={ 15 } alpha={ alpha * 0.75 }/>
                 </Touchable>
             </Touchable>

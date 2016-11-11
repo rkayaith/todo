@@ -25,12 +25,12 @@ export default class EditItemScene extends Component {
 					title="Edit Item"
 					navIconName="arrow-back"
 					onIconClicked={ this.done }
-					actions={ [{ title: "Delete item", iconName: "delete", show: 'always' }] }
+					actions={ [{ title: "Remove item", iconName: "delete", show: 'always' }] }
 					onActionSelected={ action => {
 						switch (action) {
 							case 0:
-								// delete item
-								this.props.delete()
+								// remove item
+								this.props.remove()
 								this.props.navigator.pop()
 						}
 					}}

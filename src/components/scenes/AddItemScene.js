@@ -28,7 +28,7 @@ export default class AddItemScene extends Component {
 					onActionSelected={ action => {
 						switch (action) {
 							case 0:
-								// delete item
+								// add item
 								return this.done()
 						}
 					}}
