@@ -15,12 +15,23 @@ import { colors } from '../components/styles'
 
 // Create item
 export function fromObj(obj) {
-	let { id, checked, urgent, important } = obj
-	// Replace -Infinity with current date
-	if (urgent === -Infinity) {
-		urgent = Date.now()
+	let item = emptyItem()
+	for (let prop in item) {
+		if (obj[prop] !== undefined) {
+			item[prop] = obj[prop]
+		}
 	}
-	return { id, checked, urgent, important }
+	// Replace -Infinity with current date
+	if (item.urgent === -Infinity) {
+		item.urgent = Date.now()
+	}
+	return item
+}
+
+
+// Array of possible item levels, sorted by importance in descending order
+export function levels() {
+	return [4, 3, 2, 1]
 }
 
 
@@ -29,20 +40,32 @@ export function id(item) {
 	return item.id
 }
 
+export function text(item) {
+	return item.text
+}
+
 export function isChecked(item) {
 	return item.checked
 }
 
-export function isUrgent(item) {
-	return item.urgent <= Date.now()
+export function isUrgent(item, date) {
+	// supply a Date object to see if an item will be urgent on a certain date
+	date = date ? date.getTime() : Date.now()
+	return item.urgent <= date
+}
+
+export function urgentDate(item) {
+	let date = new Date(item.urgent)
+	if (isNaN(date.getTime())) return null
+	return date
 }
 
 export function isImportant(item) {
 	return item.important
 }
 
-export function level(item) {
-	if (isUrgent(item)) {
+export function level(item, date) {
+	if (isUrgent(item, date)) {
 		if (isImportant(item)) {
 			return 4
 		} else {
@@ -128,7 +151,7 @@ export function emptyItem() {
 
 // Helpers
 function toLevel(itemOrLevel) {
-	if (Number.isInteger(itemOrLevel)) {
+	if (levels().includes(itemOrLevel)) {
 		return itemOrLevel
 	} else {
 		return level(itemOrLevel)

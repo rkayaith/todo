@@ -7,12 +7,15 @@ TODO:
 	- check if performance has degraded
 
 	Features:
-		- notifications
+		- disable certain item levels from appearing in summary notification
 		- countdown to urgent date in list
 		- auto refresh
 		- undo button
 
 	UX:
+		- add app icon
+		- improve icons in notifications
+		- improve text formatting in notifications (fork react-native-push-notification and use Html.fromHtml())
 		- improve item editor behaviour when keyboard is open
 		- clean up item editor urgent picker
 		- fix TouchableNativeFeedback bug where checking off an item that

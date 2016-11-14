@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import { Navigator } from 'react-native'
-import { View, Text, AsyncStorage, StyleSheet, UIManager, LayoutAnimation } from 'react-native'
+import { AppState, UIManager, LayoutAnimation } from 'react-native'
 
 import HomeScene from './scenes/HomeScene'
 import AddItemScene from './scenes/AddItemScene'
 import EditItemScene from './scenes/EditItemScene'
 
 import * as Data from '../modules/Data'
+import * as Item from '../modules/Item'
+import * as Notifications from '../modules/Notifications'
 
 import styles from './styles'
 
@@ -19,7 +21,16 @@ export default class TodoApp extends Component {
     }
 
     async componentDidMount() {
+        Notifications.init()
+
+        this.onAppStateChange(AppState.currentState)
+        AppState.addEventListener('change', this.onAppStateChange)
+
         this.setData(await Data.getStoredData())
+    }
+
+    componentWillUnmount() {
+        AppState.removeEventListener('change', this.onAppStateChange)
     }
 
     componentWillUpdate(props, state) {
@@ -30,7 +41,6 @@ export default class TodoApp extends Component {
     }
 
     render() {
-
         return (
             <Navigator
                 style={ styles.scene }
@@ -40,8 +50,8 @@ export default class TodoApp extends Component {
                         case 'home': return (
                             <HomeScene
                                 data={ this.state.data }
-                                changeItem={ (...args) => this.setData(Data.change(this.data(), ...args)) }
-                                removeItem={ (...args) => this.setData(Data.remove(this.data(), ...args)) }
+                                changeItem={ (id, changes) => this.setData(Data.change(this.data(), id, changes)) }
+                                removeItem={ id => this.setData(Data.remove(this.data(), id)) }
                                 resetData={ () => this.setData(Data.mockData()) }
                                 navigator={ navigator }
                             />
@@ -76,5 +86,33 @@ export default class TodoApp extends Component {
 
     setData = (data) => {
         this.setState({ data })
+    }
+
+    onAppStateChange = (appState) => {
+        switch (appState) {
+            case 'active': return this.onActive()
+            case 'background': return this.onBackground()
+        }
+    }
+
+    onActive = () => {
+        // Don't display notifications when app is open
+        Notifications.clearAll()
+    }
+
+    onBackground = () => {
+        // Create a summary notification for items that aren't checked
+        let summaryItems = Data.values(this.data())
+            .filter(item => !Item.isChecked(item))
+        // Create reminders for items that are unchecked, not urgent, and will become urgent
+        let reminderItems = Data.values(this.data())
+            .filter(item => !Item.isChecked(item) && !Item.isUrgent(item) && Item.urgentDate(item))
+
+        Notifications.summarize(summaryItems, new Date())   // create summary notification immediately
+        reminderItems.forEach(item => {
+            let date = Item.urgentDate(item)
+            Notifications.summarize(summaryItems, date)     // update summary notification
+            Notifications.remind(item, date)                // schedule reminder notification
+        })
     }
 }
