@@ -25,7 +25,7 @@ export default class ItemEditor extends Component {
 	}
 
 	componentDidMount() {
-		this.animateBg()
+		this.animateBg(750)
 		Animated.timing(this.state.cardValue, { toValue: 1, duration: 400 }).start()
 	}
 
@@ -151,7 +151,7 @@ export default class ItemEditor extends Component {
 		return { selectedValue: "custom" }
 	}
 
-	animateBg = () => {
+	animateBg = (duration) => {
 
 		this.state.bgValue.stopAnimation(value => {
 			// find the current background color based on the values it was animating between
@@ -164,7 +164,7 @@ export default class ItemEditor extends Component {
 
 			// Start a new animation between the current background color and
 			this.setState({ bgValue, bgPrev, bgNext })
-			Animated.timing(bgValue, { toValue: 1, duration: 250 }).start()
+			Animated.timing(bgValue, { toValue: 1, duration: duration || 400 }).start()
 		})
 
 		function interpolate(color1, color2, interpValue) {
@@ -208,14 +208,15 @@ const icon_size = 45
 const styles = StyleSheet.create({
 	...style,
 	container: {
-		padding: 32,
+		padding: 16,
 		flex: 1
 	},
 	card: {
 		flex: 1,
 		elevation: 2,
 		backgroundColor: colors.white,
-		padding: 12
+		paddingVertical: 12,
+		paddingHorizontal: 24,
 	},
 	row: {
 		flexDirection: 'row',
@@ -233,5 +234,6 @@ const styles = StyleSheet.create({
 	input: {
 		fontFamily: 'serif',
 		fontSize: 24,
+		marginBottom: 12,
 	}
 })
