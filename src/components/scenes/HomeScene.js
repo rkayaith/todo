@@ -45,6 +45,8 @@ export default class HomeScene extends Component {
 					data={ this.props.data }
 					changeItem={ this.props.changeItem }
 					removeItem={ this.props.removeItem }
+					notifSettings={ this.props.notifSettings }
+					setNotifSettings={ this.props.setNotifSettings }
 					goToEditItem={ this.goToEditItem }
 				/>
 

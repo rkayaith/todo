@@ -4,10 +4,10 @@ import { View, Text, ListView, StyleSheet } from 'react-native'
 import TodoItem from './TodoItem'
 
 import { style, colors } from '../styles'
-import { Icon } from '../components'
+import { Icon, Touchable } from '../components'
 
 import * as Item from '../../modules/Item'
-import * as Data from '../../modules/Data'
+import * as Notifications from '../../modules/Notifications'
 
 export default class TodoListSection extends Component {
 	constructor(props) {
@@ -30,9 +30,22 @@ export default class TodoListSection extends Component {
 					<Icon
 						{ ...Item.icon(this.props.level) }
 						size={ 36 }
-						color={ colors.alpha(colors.white, 0.87) }
+						color={ colors.white }
+						alpha={ CONTENT_ALPHA }
 					/>
 					<Text style={ styles.headerText }>{ Item.description(this.props.level) }</Text>
+					<Touchable
+						onPress={ () => this.props.setNotifEnabled(!this.props.notifEnabled) }
+						ripple={ colors.white }
+						borderless={ true }>
+						<Icon
+							{ ...Notifications.icon(this.props.data, this.props.notifEnabled) }
+							size={ 36 }
+							iconSize={ 18 }
+							color={ colors.white }
+							alpha={ this.props.notifEnabled ? CONTENT_ALPHA : 0.75 }
+						/>
+					</Touchable>
 				</View>
 				<ListView
 					dataSource={ this.state.ds }
@@ -44,7 +57,6 @@ export default class TodoListSection extends Component {
 	}
 
 	cloneDataSource = (ds, data) => {
-		data = Data.sort(data, Item.sort)
 		return ds.cloneWithRows(data)
 	}
 
@@ -62,6 +74,8 @@ export default class TodoListSection extends Component {
 
 }
 
+const CONTENT_ALPHA = 0.87
+
 const styles = StyleSheet.create({
 	header: {
 		alignItems: 'center',
@@ -69,8 +83,9 @@ const styles = StyleSheet.create({
 	},
 	headerText: {
 		...style.text,
+		flex: 1,
 		fontSize: 15,
-		color: colors.alpha(colors.white, 0.87),
+		color: colors.alpha(colors.white, CONTENT_ALPHA),
 		fontFamily: 'sans-serif-medium',
 		marginLeft: 5,
 		marginBottom: 1,

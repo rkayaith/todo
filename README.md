@@ -7,7 +7,6 @@ TODO:
 	- check if performance has degraded
 
 	Features:
-		- disable certain item levels from appearing in summary notification
 		- countdown to urgent date in list
 		- auto refresh
 		- undo button

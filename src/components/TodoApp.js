@@ -13,8 +13,11 @@ import * as Notifications from '../modules/Notifications'
 import styles from './styles'
 
 export default class TodoApp extends Component {
-    state = { data: Data.emptyData() }
 
+    state = { data: Data.emptyData(), notifSettings: Notifications.defaultSettings() }
+
+
+    // App lifecycle
     constructor(props) {
         super(props)
         UIManager.setLayoutAnimationEnabledExperimental(true)
@@ -23,9 +26,9 @@ export default class TodoApp extends Component {
     async componentDidMount() {
         Notifications.init()
 
-        this.onAppStateChange(AppState.currentState)
         AppState.addEventListener('change', this.onAppStateChange)
 
+        this.setNotifSettings(await Notifications.getStoredSettings())
         this.setData(await Data.getStoredData())
     }
 
@@ -34,10 +37,27 @@ export default class TodoApp extends Component {
     }
 
     componentWillUpdate(props, state) {
-        if (state.data !== this.state.data) {
-            Data.setStoredData(state.data)
-            LayoutAnimation.easeInEaseOut()
+        LayoutAnimation.easeInEaseOut()
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.data !== this.state.data) {
+            Data.setStoredData(this.state.data)
         }
+        if (prevState.notifSettings !== this.state.notifSettings) {
+            Notifications.setStoredSettings(this.state.notifSettings)
+        }
+        this.scheduleNotifications(this.state.data, this.state.notifSettings)
+    }
+
+    // App is resumed. Not called on initial mounting
+    onActive() {
+        this.refresh()
+    }
+
+    // App is closed
+    onBackground() {
+
     }
 
     render() {
@@ -52,6 +72,8 @@ export default class TodoApp extends Component {
                                 data={ this.state.data }
                                 changeItem={ (id, changes) => this.setData(Data.change(this.data(), id, changes)) }
                                 removeItem={ id => this.setData(Data.remove(this.data(), id)) }
+                                notifSettings={ this.state.notifSettings }
+                                setNotifSettings={ this.setNotifSettings }
                                 resetData={ () => this.setData(Data.mockData()) }
                                 navigator={ navigator }
                             />
@@ -80,6 +102,8 @@ export default class TodoApp extends Component {
         )
     }
 
+
+    // Get/Set state properties
     data = () => {
         return this.state.data
     }
@@ -88,31 +112,40 @@ export default class TodoApp extends Component {
         this.setState({ data })
     }
 
+    setNotifSettings = (settings) => {
+        let notifSettings = { ...this.state.notifSettings, ...settings }
+        this.setState({ notifSettings })
+    }
+
+
+    // Helpers
+    refresh = () => {
+        // need a delay to play nice when app is opened through a notification
+        setTimeout(() => this.forceUpdate(), 1000)
+    }
+
+    scheduleNotifications = (data, notifSettings) => {
+        Notifications.clearAll()
+
+        let items = Data.values(data).filter(item => !Item.isChecked(item))
+        // Create a summary for items that are unchecked and are in a level with notifications enabled
+        let summaryItems = (date) => items.filter(item => notifSettings[Item.level(item, date)])
+        // Create reminders for items that are unchecked, not urgent, and will become urgent
+        let reminderItems = items.filter(item => !Item.isUrgent(item) && Item.urgentDate(item))
+
+        Notifications.summarize(summaryItems(new Date()), new Date())   // create summary notification immediately
+        reminderItems.forEach(item => {
+            let date = Item.urgentDate(item)
+            Notifications.summarize(summaryItems(date), date)           // update summary notification
+            Notifications.remind(item, date)                            // schedule reminder notification
+        })
+    }
+
     onAppStateChange = (appState) => {
         switch (appState) {
-            case 'active': return this.onActive()
-            case 'background': return this.onBackground()
+            case 'active': this.onActive.call(this); break
+            case 'background': this.onBackground.call(this); break
         }
     }
 
-    onActive = () => {
-        // Don't display notifications when app is open
-        Notifications.clearAll()
-    }
-
-    onBackground = () => {
-        // Create a summary notification for items that aren't checked
-        let summaryItems = Data.values(this.data())
-            .filter(item => !Item.isChecked(item))
-        // Create reminders for items that are unchecked, not urgent, and will become urgent
-        let reminderItems = Data.values(this.data())
-            .filter(item => !Item.isChecked(item) && !Item.isUrgent(item) && Item.urgentDate(item))
-
-        Notifications.summarize(summaryItems, new Date())   // create summary notification immediately
-        reminderItems.forEach(item => {
-            let date = Item.urgentDate(item)
-            Notifications.summarize(summaryItems, date)     // update summary notification
-            Notifications.remind(item, date)                // schedule reminder notification
-        })
-    }
 }

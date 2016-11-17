@@ -1,5 +1,8 @@
+import { AsyncStorage } from 'react-native'
+
 import PushNotification from 'react-native-push-notification'
 
+import * as Data from './Data'
 import * as Item from './Item'
 
 /**
@@ -18,6 +21,8 @@ export function init() {
 }
 
 export function notify(notification, date) {
+    console.debug("notification", notification, "date", date)
+
     if (!notification) return
     if (date.getTime() <= Date.now()) {
         PushNotification.localNotification(notification)
@@ -36,7 +41,6 @@ export function clearAll() {
 export function remind(item, date) {
     let level = Item.level(item, date)  // determine item's level when the notification appears
     notify(notification({
-        tag: Item.id(item),
         title: item.text,
         message: "is " + Item.description(level),
         color: Item.color(level),
@@ -45,6 +49,7 @@ export function remind(item, date) {
 
 // Summary for a list of items
 export function summarize(itemList, date) {
+    if (itemList.length < 1) return
     itemList = itemList.sort(Item.sort)
 
     let numItems = 0
@@ -63,12 +68,13 @@ export function summarize(itemList, date) {
             return [Item.description(level.level) + ':', ...level.items.map(Item.text)].join('\n • ')
         })
         notify(notification({
-            tag: 'SUMMARY_NOTIFICATION',
+            id: SUMMARY_ID,
             title: "Things to do",
             color: Item.color(levels[0].level),
             message: bigText[0],                // short message only has items in the highest level
             bigText: bigText.join('\n'),        // full message has all items
             number: numItems > 1 ? numItems.toString() : null,
+            autoCancel: false,
             ongoing: true,
             vibrate: false,
             playSound: false,
@@ -80,12 +86,10 @@ export function summarize(itemList, date) {
 // Default notification properties
 function notification(opts)  {
     return {
-        // all notifications use the same id, use tag property to distinguish them
-        id: NOTIFICATION_ID,
         message: "TodoApp Notification",
         largeIcon: "ic_launcher",
         smallIcon: "ic_notification",
-        autoCancel: true,
+        autoCancel: false,
         vibrate: true,
         vibration: 1000,
         playSound: true,
@@ -108,4 +112,41 @@ function notification(opts)  {
     }
 }
 
-const NOTIFICATION_ID = '8888'
+const SUMMARY_ID = '8888'
+
+
+// Get/Set settings from/in AsyncStorage
+export async function getStoredSettings() {
+	let settings = JSON.parse(await AsyncStorage.getItem('notifSettings'))
+	if (settings) {
+		console.log('Notifications.getStoredSettings: got settings from storage')
+		return settings
+	}
+	return defaultSettings()
+}
+
+export async function setStoredSettings(settings) {
+	await AsyncStorage.setItem('notifSettings', JSON.stringify(settings))
+	console.log("Notifications.setStoredSettings: set settings in storage")
+}
+
+
+// Default Settings
+export function defaultSettings() {
+    return Item.levels().reduce((settings, level) => {
+        settings[level] = false
+        return settings
+    }, {})
+}
+
+
+// Notification icon
+export function icon(data, isEnabled) {
+    let name = 'notifications'
+    if (!isEnabled) {
+        name = 'notifications-off'
+    } else if (!Data.values(data).every(Item.isChecked)) {
+        name = 'notifications-active'
+    }
+    return { name }
+}

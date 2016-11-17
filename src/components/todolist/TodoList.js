@@ -11,13 +11,16 @@ import * as Data from '../../modules/Data'
 export default class TodoList extends Component {
 
 	render() {
+		let data = Data.sort(this.props.data, Item.sort)
 		let sections = Item.levels().map(level => (
 			<TodoListSection
 				key={ level }
 				level={ level }
-				data={ Data.filter(this.props.data, item => Item.level(item) === level) }
+				data={ Data.filter(data, item => Item.level(item) === level) }
 				changeItem={ this.props.changeItem }
 				removeItem={ this.props.removeItem }
+				notifEnabled={ this.props.notifSettings[level] }
+				setNotifEnabled={ enabled => this.props.setNotifSettings({ [level]: enabled }) }
 				goToEditItem={ this.props.goToEditItem }
 			/>
 		))
