@@ -48,24 +48,24 @@ export function isChecked(item) {
 	return item.checked
 }
 
-export function isUrgent(item, date) {
-	// supply a Date object to see if an item will be urgent on a certain date
-	date = date ? date.getTime() : Date.now()
-	return item.urgent <= date
+export function isUrgent(item, time) {
+	// supply a unix timestamp to see if an item will be urgent on a certain date
+	if (!time) time = Date.now()
+	return item.urgent <= time
 }
 
-export function urgentDate(item) {
+export function urgentTime(item) {
 	let date = new Date(item.urgent)
 	if (isNaN(date.getTime())) return null
-	return date
+	return item.urgent
 }
 
 export function isImportant(item) {
 	return item.important
 }
 
-export function level(item, date) {
-	if (isUrgent(item, date)) {
+export function level(item, time) {
+	if (isUrgent(item, time)) {
 		if (isImportant(item)) {
 			return 4
 		} else {
@@ -98,6 +98,10 @@ export function sort(item1, item2) {
 		return item1.urgent - item2.urgent
 	}
 	return 0
+}
+
+export function sortByUrgency(item1, item2) {
+	return item1.urgent - item2.urgent
 }
 
 

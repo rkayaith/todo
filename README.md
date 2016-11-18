@@ -8,7 +8,6 @@ TODO:
 
 	Features:
 		- countdown to urgent date in list
-		- auto refresh
 		- undo button
 
 	UX:

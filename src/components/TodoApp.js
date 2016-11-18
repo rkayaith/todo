@@ -15,7 +15,7 @@ import styles from './styles'
 export default class TodoApp extends Component {
 
     state = { data: Data.emptyData(), notifSettings: Notifications.defaultSettings() }
-
+    refreshTimeout = null
 
     // App lifecycle
     constructor(props) {
@@ -43,6 +43,7 @@ export default class TodoApp extends Component {
     componentDidUpdate(prevProps, prevState) {
         if (prevState.data !== this.state.data) {
             Data.setStoredData(this.state.data)
+            this.scheduleRefresh(this.state.data)
         }
         if (prevState.notifSettings !== this.state.notifSettings) {
             Notifications.setStoredSettings(this.state.notifSettings)
@@ -53,11 +54,12 @@ export default class TodoApp extends Component {
     // App is resumed. Not called on initial mounting
     onActive() {
         this.refresh()
+        this.scheduleRefresh(this.state.data)
     }
 
     // App is closed
     onBackground() {
-
+        clearTimeout(this.refreshTimeout)
     }
 
     render() {
@@ -124,20 +126,34 @@ export default class TodoApp extends Component {
         setTimeout(() => this.forceUpdate(), 1000)
     }
 
+    scheduleRefresh = (data) => {
+        clearTimeout(this.refreshTimeout)
+        let upcomingItems = Data.values(data)
+            .filter(item => !Item.isUrgent(item) && Item.urgentTime(item))
+            .sort(Item.sortByUrgency)
+
+        if (upcomingItems[0]) {
+            this.refreshTimeout = setTimeout(
+                () => this.refresh(),
+                Item.urgentTime(upcomingItems[0]) - Date.now()
+            )
+        }
+    }
+
     scheduleNotifications = (data, notifSettings) => {
         Notifications.clearAll()
 
         let items = Data.values(data).filter(item => !Item.isChecked(item))
         // Create a summary for items that are unchecked and are in a level with notifications enabled
-        let summaryItems = (date) => items.filter(item => notifSettings[Item.level(item, date)])
+        let summaryItems = (time) => items.filter(item => notifSettings[Item.level(item, time)])
         // Create reminders for items that are unchecked, not urgent, and will become urgent
-        let reminderItems = items.filter(item => !Item.isUrgent(item) && Item.urgentDate(item))
+        let reminderItems = items.filter(item => !Item.isUrgent(item) && Item.urgentTime(item))
 
-        Notifications.summarize(summaryItems(new Date()), new Date())   // create summary notification immediately
+        Notifications.summarize(summaryItems(Date.now()), Date.now())   // create summary notification immediately
         reminderItems.forEach(item => {
-            let date = Item.urgentDate(item)
-            Notifications.summarize(summaryItems(date), date)           // update summary notification
-            Notifications.remind(item, date)                            // schedule reminder notification
+            let time = Item.urgentTime(item)
+            Notifications.summarize(summaryItems(time), time)           // update summary notification
+            Notifications.remind(item, time)                            // schedule reminder notification
         })
     }
 

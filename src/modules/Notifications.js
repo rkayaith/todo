@@ -20,14 +20,12 @@ export function init() {
     })
 }
 
-export function notify(notification, date) {
-    console.debug("notification", notification, "date", date)
-
+export function notify(notification, time) {
     if (!notification) return
-    if (date.getTime() <= Date.now()) {
+    if (time <= Date.now()) {
         PushNotification.localNotification(notification)
     } else {
-        PushNotification.localNotificationSchedule({ ...notification, date })
+        PushNotification.localNotificationSchedule({ ...notification, date: new Date(time) })
     }
 }
 
@@ -36,26 +34,26 @@ export function clearAll() {
 }
 
 
-// Notification presets. date should be a Date object for when the notification should be scheduled
+// Notification presets. time should be a unix timestamp for when the notification should be scheduled
 // Reminder for a single item
-export function remind(item, date) {
-    let level = Item.level(item, date)  // determine item's level when the notification appears
+export function remind(item, time) {
+    let level = Item.level(item, time)  // determine item's level when the notification appears
     notify(notification({
         title: item.text,
         message: "is " + Item.description(level),
         color: Item.color(level),
-    }), date)
+    }), time)
 }
 
 // Summary for a list of items
-export function summarize(itemList, date) {
+export function summarize(itemList, time) {
     if (itemList.length < 1) return
     itemList = itemList.sort(Item.sort)
 
     let numItems = 0
     // sort items by level
     let levels = Item.levels().reduce((levels, level) => {
-        let items = itemList.filter(item => Item.level(item, date) === level)
+        let items = itemList.filter(item => Item.level(item, time) === level)
         if (items.length > 0) {
             numItems += items.length
             levels.push({ level, items })
@@ -78,7 +76,7 @@ export function summarize(itemList, date) {
             ongoing: true,
             vibrate: false,
             playSound: false,
-        }), date)
+        }), time)
     }
 }
 
