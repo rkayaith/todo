@@ -3,8 +3,8 @@ import { View } from 'react-native'
 
 import ItemEditor from '../editor/ItemEditor'
 
-import styles from '../styles'
-import { Toolbar, StatusBar } from '../components'
+import styles, { colors } from '../styles'
+import { Toolbar, StatusBar, ColorTransition } from '../components'
 
 import * as Item from '../../modules/Item'
 
@@ -22,21 +22,27 @@ export default class EditItemScene extends Component {
 	render() {
 		return (
 			<View style={ styles.scene }>
-				<StatusBar />
-				<Toolbar
-					title="Edit Item"
-					navIconName="arrow-back"
-					onIconClicked={ this.done }
-					actions={ [{ title: "Remove item", iconName: "delete", show: 'always' }] }
-					onActionSelected={ action => {
-						switch (action) {
-							case 0:
-								// remove item
-								this.props.remove()
-								this.props.navigator.pop()
-						}
-					}}
-				/>
+				<StatusBar backgroundColor={ Item.colorDark(this.state) }/>
+				<ColorTransition
+					style={ styles.toolbar }
+					color={ Item.color(this.state) }
+					duration={ 335 }>
+					<Toolbar
+						title="Edit Item"
+						style={{ backgroundColor: colors.invisible }}
+						navIconName="arrow-back"
+						onIconClicked={ this.done }
+						actions={ [{ title: "Remove item", iconName: "delete", show: 'always' }] }
+						onActionSelected={ action => {
+							switch (action) {
+								case 0:
+									// remove item
+									this.props.remove()
+									this.props.navigator.pop()
+							}
+						}}
+					/>
+				</ColorTransition>
 				<ItemEditor
 					item={ this.state }
 					change={ this.setState.bind(this) }

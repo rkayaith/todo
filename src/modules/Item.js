@@ -9,6 +9,7 @@ import { colors } from '../components/styles'
  *     checked: bool,
  *     urgent: number | Infinity (unix timestamp for when item becomes urgent, Infinity for never)
  *     important: bool,
+ *     note: string,
  *   }
  */
 
@@ -117,6 +118,16 @@ export function color(itemOrLevel) {
 	}
 	return colors.black
 }
+export function colorDark(itemOrLevel) {
+	let level = toLevel(itemOrLevel)
+	switch (level) {
+		case 4: return colors.level4dark
+		case 3: return colors.level3dark
+		case 2: return colors.level2dark
+		case 1: return colors.level1dark
+	}
+	return colors.black
+}
 
 export function icon(itemOrLevel) {
 	let level = toLevel(itemOrLevel)
@@ -148,7 +159,8 @@ export function emptyItem() {
 		text: "",
 		checked: false,
 		urgent: Infinity,
-		important: false
+		important: false,
+		note: ""
 	}
 }
 

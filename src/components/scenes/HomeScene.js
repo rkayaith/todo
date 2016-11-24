@@ -16,7 +16,6 @@ export default class HomeScene extends Component {
 				<StatusBar backgroundColor={ colors.primaryColorDark }/>
 				<Toolbar
 					title='Todo List'
-					titleColor={ colors.white }
 					style={{ backgroundColor: colors.primaryColor }}
 					overflowIconName="more-vert"
 					actions={[

@@ -82,15 +82,15 @@ export function emptyData() {
 export function mockData() {
 	return fromArr(
 		[
-			{ text: 'urgent important', checked: true, urgent: -100000, important: true },
-			{ text: 'urgent important2', checked: false, urgent: 0, important: true },
-			{ text: 'urgent important3', checked: false, urgent: Date.now(), important: true },
-			{ text: 'urgent not important', checked: true, urgent: -100000, important: false },
-			{ text: 'urgent not important2', checked: false, urgent: 0, important: false },
-			{ text: 'not urgent important', checked: true, urgent: Date.now() + 60 * 1000, important: true },
-			{ text: 'not urgent important2', checked: false, urgent: Infinity, important: true },
-			{ text: 'not urgent not important', checked: true, urgent: Infinity, important: false },
-			{ text: 'not urgent not important2', checked: false, urgent: Infinity, important: false },
+			{ text: 'Urgent important', checked: true, urgent: -100000, important: true },
+			{ text: 'Urgent important2', checked: false, urgent: 0, important: true },
+			{ text: 'Urgent important3', checked: false, urgent: Date.now(), important: true },
+			{ text: 'Urgent not important', checked: true, urgent: -100000, important: false },
+			{ text: 'Urgent not important2', checked: false, urgent: 0, important: false },
+			{ text: 'Not urgent important', checked: true, urgent: Date.now() + 60 * 1000, important: true },
+			{ text: 'Not urgent important2', checked: false, urgent: Infinity, important: true },
+			{ text: 'Not urgent not important', checked: true, urgent: Infinity, important: false },
+			{ text: 'Not urgent not important2', checked: false, urgent: Infinity, important: false },
 		]
 		.map(Item.fromObj)
 	)

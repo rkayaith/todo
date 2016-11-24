@@ -7,14 +7,16 @@ import { style, colors } from '../styles'
 import { Icon, Touchable } from '../components'
 
 import * as Item from '../../modules/Item'
+import * as Data from '../../modules/Data'
 import * as Notifications from '../../modules/Notifications'
 
 export default class TodoListSection extends Component {
 
 	render() {
+		let isEmpty = Data.values(this.props.data).length === 0
 		return (
-			<View style={ styles.card } >
-				<View style={ [styles.header, { backgroundColor: Item.color(this.props.level) }] }>
+			<View style={ [styles.container, styles.card] } >
+				<View style={ [styles.header, isEmpty && style.card, { backgroundColor: Item.color(this.props.level) }] }>
 					<Icon
 						{ ...Item.icon(this.props.level) }
 						size={ 36 }
@@ -59,9 +61,12 @@ export default class TodoListSection extends Component {
 const CONTENT_ALPHA = 0.87
 
 const styles = StyleSheet.create({
+	...style,
 	header: {
 		alignItems: 'center',
 		flexDirection: 'row',
+		borderTopLeftRadius: style.card.borderRadius,
+		borderTopRightRadius: style.card.borderRadius,
 	},
 	headerText: {
 		...style.text,
@@ -72,10 +77,8 @@ const styles = StyleSheet.create({
 		marginLeft: 5,
 		marginBottom: 1,
 	},
-	card: {
+	container: {
 		marginTop: 16,
 		marginHorizontal: 16,
-		backgroundColor: colors.white,
-		elevation: 2,
 	},
 })

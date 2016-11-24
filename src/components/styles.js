@@ -3,6 +3,8 @@ import { StyleSheet } from 'react-native'
 // material design colors
 const md_colors = {
 
+	invisible: "#00000000",
+
 	white: "#ffffff",
 	black: "#000000",
 
@@ -291,16 +293,25 @@ export const colors = {
 	background:			md_colors.grey100,
 
 	level4: 			md_colors.red600, 		// urgent, important
+	level4dark: 		md_colors.red800,
 	level3: 			md_colors.orangea700, 	// urgent, not important
+	level3dark: 		md_colors.orange900,
 	level2: 			md_colors.amber500, 	// not urgent, important
+	level2dark: 		md_colors.amber700,
 	level1: 			md_colors.green500, 	// not urgent, not important
+	level1dark: 		md_colors.green700,
 
 	// applies alpha to a color
 	// accepts forms: #rrggbb, rrggbb
 	alpha: (color, alpha) => {
-		if (!color) return
-		if (!alpha) return color
-		return color + parseInt(255 * alpha).toString(16)
+		if (color === undefined) return
+		if (alpha === undefined) return color
+		color = color.replace('#', '')
+		let colorAlpha = parseInt(color.substr(6, 2), 16)
+		if (isNaN(colorAlpha)) colorAlpha = 255
+		alpha = parseInt(colorAlpha * alpha).toString(16)
+		alpha = alpha.length < 2 ? '0' + alpha : alpha
+		return '#' + color.substr(0, 6) + alpha
 	}
 }
 
@@ -315,6 +326,16 @@ export const style = {
 		color: colors.grey900,
 		fontSize: 15,
 	},
+	toolbar: {
+		elevation: 4,
+		height: 56,
+		backgroundColor: colors.toolbar,
+	},
+	card: {
+		backgroundColor: colors.white,
+		borderRadius: 2,
+		elevation: 2,
+	}
 }
 
 export default styles = StyleSheet.create(style)
