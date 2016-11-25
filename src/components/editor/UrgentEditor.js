@@ -38,7 +38,9 @@ export default class UrgentEditor extends Component {
 					onRequestClose={ () => this.setState({ modalVisible: false }) }
 					visible={ this.state.modalVisible }>
 					<View style={ styles.modal }>
-						<Text style={ styles.modalHeader }>Item will be urgent:</Text>
+						<View style={ styles.modalHeader }>
+							<Text style={ styles.modalHeaderText }>Item will be urgent:</Text>
+						</View>
 						<Touchable
 							style={ styles.modalOption }
 							borderless={ false }
@@ -84,7 +86,6 @@ export default class UrgentEditor extends Component {
 				<Button key='time' text={ this.parseTime(timestamp) } picker='time'/>,
 			]
 		}
-
 	}
 
 	change = (urgent) => {
@@ -132,8 +133,6 @@ export default class UrgentEditor extends Component {
 		}
 	}
 
-
-
 	parseDate = (timestamp) => {
 		const days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thu', 'Fri', 'Sat']
 		const months = [
@@ -169,10 +168,8 @@ const styles = StyleSheet.create({
 	},
 	urgentButton: {
 		flexDirection: 'row',
-		// marginLeft: -3,
 		height: 48,
 		alignItems: 'center',
-		// paddingLeft: 3,
 		marginRight: 5,
 		marginTop: -16,
 
@@ -189,19 +186,22 @@ const styles = StyleSheet.create({
 		borderBottomColor: colors.alpha(colors.black, 0.12),
 	},
 	modal: {
+		paddingVertical: 8,
 	},
 	modalHeader: {
+		height: 48,
+		justifyContent: 'center',
+	},
+	modalHeaderText: {
 		...style.text,
 		fontSize: 22,
 		paddingHorizontal: 24,
-		paddingVertical: 16,
-		paddingBottom: 8,
-		fontFamily: 'sans-serif-medium'
+		fontFamily: 'sans-serif-medium',
 	},
 	modalOption: {
+		height: 48,
+		justifyContent: 'center',
 		paddingHorizontal: 24,
-		paddingVertical: 16,
-		justifyContent: 'center'
 	},
 	modalText: {
 		...style.text,

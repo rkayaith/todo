@@ -16,7 +16,10 @@ export default class TodoListSection extends Component {
 		let isEmpty = Data.values(this.props.data).length === 0
 		return (
 			<View style={ [styles.container, styles.card] } >
-				<View style={ [styles.header, isEmpty && style.card, { backgroundColor: Item.color(this.props.level) }] }>
+				<View style={[
+					styles.header,
+					isEmpty && styles.card,
+					{ backgroundColor: Item.color(this.props.level) }] }>
 					<Icon
 						{ ...Item.icon(this.props.level) }
 						size={ 36 }

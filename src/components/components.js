@@ -126,9 +126,11 @@ export const Modal = ({ style, children, ...props }) => (
 		transparent={ true }>
 		<TouchableWithoutFeedback onPress={ props.onRequestClose }>
 			<View style={ [styles.modal, style] } >
-				<View style={ [styles.card, { elevation: 12 }] }>
-					{ children }
-				</View>
+				<TouchableWithoutFeedback onPress={ () => {} }>
+					<View style={ [styles.card, { elevation: 12 }] }>
+						{ children }
+					</View>
+				</TouchableWithoutFeedback>
 			</View>
 		</TouchableWithoutFeedback>
 	</RCTModal>

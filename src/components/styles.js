@@ -302,10 +302,10 @@ export const colors = {
 	level1dark: 		md_colors.green700,
 
 	// applies alpha to a color
-	// accepts forms: #rrggbb, rrggbb
+	// accepts forms: #rrggbb, rrggbb, #rrggbbaa, rrggbbaa
 	alpha: (color, alpha) => {
-		if (color === undefined) return
-		if (alpha === undefined) return color
+		if (color == null) return
+		if (alpha == null) return color
 		color = color.replace('#', '')
 		let colorAlpha = parseInt(color.substr(6, 2), 16)
 		if (isNaN(colorAlpha)) colorAlpha = 255

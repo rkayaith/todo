@@ -12,9 +12,10 @@ export const editorstyle = {
 		paddingHorizontal: 16,
 	},
 	contentIcon: {
-		height: 72,
-		alignItems: 'flex-start',
-		width: 56,
+		height: 24,
+		// alignItems: 'flex-start',
+		width: 24,
+		marginRight: 72 - 24 - 16,
 	},
 	contentContainer: {
 		justifyContent: 'center',
