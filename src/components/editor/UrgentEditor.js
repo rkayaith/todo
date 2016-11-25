@@ -18,11 +18,15 @@ export default class UrgentEditor extends Component {
 		return (
 			<View style={ styles.contentRow }>
 				<Icon style={ styles.contentIcon } { ...Item.icon(3) } iconSize={ 24 }/>
-				<View style={ styles.contentContainer }>
+				<View style={ [styles.contentContainer, { marginTop: 16 }] }>
 					<Text style={ styles.contentLabel }>Urgent</Text>
-					{ this.contentText(this.props.item.urgent) }
+					<View style={ styles.urgentContainer }>
+						{ this.content(this.props.item.urgent) }
+					</View>
 				</View>
-				<Touchable onPress={ () => this.setState({ modalVisible: true })}>
+				<Touchable
+					hitSlop={ 10 }
+					onPress={ () => this.showPicker('modal') }>
 					<Icon
 						style={ styles.contentAction }
 						name="edit"
@@ -35,19 +39,52 @@ export default class UrgentEditor extends Component {
 					visible={ this.state.modalVisible }>
 					<View style={ styles.modal }>
 						<Text style={ styles.modalHeader }>Item will be urgent:</Text>
-						<Touchable style={ styles.modalOption } onPress={ () => this.change(-Infinity)}>
+						<Touchable
+							style={ styles.modalOption }
+							borderless={ false }
+							onPress={ () => this.change(-Infinity)}>
 							<Text style={ styles.modalText }>Now</Text>
 						</Touchable>
-						<Touchable style={ styles.modalOption } onPress={ () => this.change(Infinity)}>
+						<Touchable
+							style={ styles.modalOption }
+							borderless={ false }
+							onPress={ () => this.change(Infinity)}>
 							<Text style={ styles.modalText }>Never</Text>
 						</Touchable>
-						<Touchable style={ styles.modalOption } onPress={ () => this.showPicker('datetime') }>
+						<Touchable
+							style={ styles.modalOption }
+							borderless={ false }
+							onPress={ () => this.showPicker('datetime') }>
 							<Text style={ styles.modalText }>Pick date & time</Text>
 						</Touchable>
 					</View>
 				</Modal>
 			</View>
 		)
+	}
+
+	content = (timestamp) => {
+
+		let Button = (props) => {
+			return (
+				<Touchable
+					style={ styles.urgentButton }
+					onPress={ () => this.showPicker(props.picker) }>
+					<Text style={ styles.urgentText }>{ props.text }</Text>
+					<Icon style={ styles.arrow } name="arrow-drop-down" iconSize={ 15 }/>
+				</Touchable>
+			)
+		}
+
+		switch (timestamp) {
+			case -Infinity: return <Button text="Now" picker='modal'/>
+			case Infinity: return <Button text="Never" picker='modal'/>
+			default: return [
+				<Button key='date' text={ this.parseDate(timestamp) } picker='date'/>,
+				<Button key='time' text={ this.parseTime(timestamp) } picker='time'/>,
+			]
+		}
+
 	}
 
 	change = (urgent) => {
@@ -62,6 +99,8 @@ export default class UrgentEditor extends Component {
 		let date = new Date(Item.urgentTime(this.props.item) || Date.now())
 
 		switch (picker) {
+			case 'modal':
+				this.setState({ modalVisible: true }); break
 			case 'date':
 				done(await showDatePicker(date)); break
 			case 'time':
@@ -69,7 +108,7 @@ export default class UrgentEditor extends Component {
 			case 'datetime':
 				date = await(showDatePicker(date))
 				if (date === null) return
-				done(await showTimePicker(new Date(date))); break
+				done(await showTimePicker(new Date(date)))
 		}
 
 		function done(date) {
@@ -93,27 +132,7 @@ export default class UrgentEditor extends Component {
 		}
 	}
 
-	contentText = (timestamp) => {
-		if (timestamp === -Infinity) return <Text style={ styles.contentText }>Now</Text>
-		if (timestamp === Infinity) return <Text style={ styles.contentText }>Never</Text>
-		return (
-			<View style={{ flexDirection: 'row', }}>
-				<Touchable
-					style={ [styles.dateContainer, ] }
-					// hitSlop={{ top: 20, bottom: 20 }}
-					onPress={ () => this.showPicker('date') }>
-					<Text style={ styles.date }>{ this.parseDate(timestamp) }</Text>
-					<Icon style={ styles.arrow } name="arrow-drop-down" iconSize={ 15 }/>
-				</Touchable>
-				<Touchable
-					style={ styles.dateContainer }
-					onPress={ () => this.showPicker('time') }>
-					<Text style={ styles.date }>{ this.parseTime(timestamp) }</Text>
-					<Icon  style={ styles.arrow } name="arrow-drop-down" iconSize={ 15 }/>
-				</Touchable>
-			</View>
-		)
-	}
+
 
 	parseDate = (timestamp) => {
 		const days = ['Sun', 'Mon', 'Tues', 'Wed', 'Thu', 'Fri', 'Sat']
@@ -145,18 +164,29 @@ export default class UrgentEditor extends Component {
 const styles = StyleSheet.create({
 	...style,
 	...editorstyle,
-	dateContainer: {
+	urgentContainer: {
+		flexDirection: 'row',
+	},
+	urgentButton: {
 		flexDirection: 'row',
 		// marginLeft: -3,
+		height: 48,
+		alignItems: 'center',
 		// paddingLeft: 3,
 		marginRight: 5,
-		borderBottomWidth: 1,
-		borderBottomColor: colors.alpha(colors.black, 0.1)
+		marginTop: -16,
+
 	},
-	date: {
+	urgentText: {
 		...editorstyle.contentText,
+		height: 20,
+		borderBottomWidth: 1,
+		borderBottomColor: colors.alpha(colors.black, 0.12),
 	},
 	arrow: {
+		height: 20,
+		borderBottomWidth: 1,
+		borderBottomColor: colors.alpha(colors.black, 0.12),
 	},
 	modal: {
 	},

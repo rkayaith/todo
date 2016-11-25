@@ -13,6 +13,7 @@ export default class TodoItem extends Component {
         return (
             <Touchable
                 ripple={ color }
+                borderless={ false }
                 onPress={ this.props.edit }
                 style={ [styles.container] }>
 
@@ -21,7 +22,6 @@ export default class TodoItem extends Component {
                     alpha={ alpha }
                     value={ this.props.checked }
                     ripple={ color }
-                    borderless={ true }
                     onValueChange={ checked => this.props.change({ checked }) } />
 
                 <Text
@@ -34,7 +34,7 @@ export default class TodoItem extends Component {
                     { this.props.text }
                 </Text>
 
-                <Touchable ripple={ color } borderless={ true } onPress={ this.props.remove }>
+                <Touchable ripple={ color } onPress={ this.props.remove }>
                     <Icon name="clear" size={ 36 } iconSize={ 15 } alpha={ alpha * 0.75 }/>
                 </Touchable>
             </Touchable>

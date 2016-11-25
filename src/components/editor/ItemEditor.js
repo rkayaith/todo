@@ -32,6 +32,7 @@ export default class ItemEditor extends Component {
 					<CheckBox
 						style={ styles.contentAction }
 						value={ this.props.item.checked }
+						hitSlop={ 10 }
 						onValueChange={ checked => this.props.change({ checked }) }
 					/>
 				</View>
@@ -52,6 +53,7 @@ export default class ItemEditor extends Component {
 					<CheckBox
 						style={ styles.contentAction }
 						value={ this.props.item.important }
+						hitSlop={ 10 }
 						onValueChange={ important => this.props.change({ important }) }
 					/>
 				</View>

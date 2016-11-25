@@ -24,13 +24,27 @@ export const StatusBar = (props) => (
 	/>
 )
 
-export const Touchable = ({ style, children, ripple, borderless, ...props }) => (
-	<TouchableNativeFeedback
-		background={ TouchableNativeFeedback.Ripple(colors.alpha(ripple, 0.26), borderless) }
-		{ ...props } >
-		<View style={ style }>{ children }</View>
-	</TouchableNativeFeedback>
-)
+export const Touchable = ({	style, children, ripple, borderless, hitSlop, ...props }) => {
+	borderless = typeof borderless == 'undefined' ? true : borderless
+	hitSlop = hitSlop || {}
+	if (typeof hitSlop === 'number') {
+		hitSlop = { top: hitSlop, bottom: hitSlop, left: hitSlop, right: hitSlop }
+	}
+	return (
+		<TouchableNativeFeedback
+			hitSlop={{
+				top: hitSlop.top || 0,
+				bottom: hitSlop.bottom || 0,
+				left: hitSlop.left || 0,
+				right: hitSlop.right || 0,
+			}}
+			background={ TouchableNativeFeedback.Ripple(colors.alpha(ripple, 0.26), borderless) }
+			{ ...props } >
+			<View style={ style }>{ children }</View>
+		</TouchableNativeFeedback>
+	)
+}
+
 
 export const Icon = ({ size, iconSize, style, alpha, color, ...props }) => (
 	<View
@@ -43,9 +57,10 @@ export const Icon = ({ size, iconSize, style, alpha, color, ...props }) => (
 	</View>
 )
 
-export const CheckBox = ({ value, ripple, borderless, onValueChange, ...props }) => (
+export const CheckBox = ({ value, ripple, hitSlop, borderless, onValueChange, ...props }) => (
 	<Touchable
 		ripple={ ripple }
+		hitSlop={ hitSlop }
 		borderless={ borderless }
 		onPress={ () => onValueChange && onValueChange(!value) } >
 		<Icon
@@ -68,7 +83,6 @@ export class ActionButton extends Component {
 				<Touchable
 					{ ...props }
 					ripple={ colors.white }
-					borderless={ true }
 					onPressIn={ () => this.setState({ pressed: true }) }
 					onPressOut={ () => this.setState({ pressed: false }) } >
 					<Icon
@@ -84,7 +98,7 @@ export class ActionButton extends Component {
 }
 
 export class TextInputExpanding extends Component {
-	state = { height: 0 }
+	state = { height: -1 }
 	render() {
 		return (
 			<View>
@@ -93,7 +107,9 @@ export class TextInputExpanding extends Component {
 					multiline={ true }
 					style={ [this.props.style, { height: this.state.height }] }
 					onContentSizeChange={ ({ nativeEvent }) => {
-						LayoutAnimation.easeInEaseOut()
+						if (this.state.height !== -1) {
+							LayoutAnimation.easeInEaseOut()
+						}
 						this.setState({ height: nativeEvent.contentSize.height })
 						this.props.onContentSizeChange && this.props.onContentSizeChange()
 					}}

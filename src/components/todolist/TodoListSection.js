@@ -26,8 +26,7 @@ export default class TodoListSection extends Component {
 					<Text style={ styles.headerText }>{ Item.description(this.props.level) }</Text>
 					<Touchable
 						onPress={ () => this.props.setNotifEnabled(!this.props.notifEnabled) }
-						ripple={ colors.white }
-						borderless={ true }>
+						ripple={ colors.white }>
 						<Icon
 							{ ...Notifications.icon(this.props.data, this.props.notifEnabled) }
 							size={ 36 }
