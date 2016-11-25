@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, ListView, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 
 import TodoItem from './TodoItem'
 
@@ -10,18 +10,6 @@ import * as Item from '../../modules/Item'
 import * as Notifications from '../../modules/Notifications'
 
 export default class TodoListSection extends Component {
-	constructor(props) {
-		super(props)
-		let ds = this.cloneDataSource(new ListView.DataSource({
-			rowHasChanged: (a, b) => a !== b,
-		}), props.data)
-
-		this.state = { ds }
-	}
-
-	componentWillReceiveProps(props) {
-		this.setState({ ds: this.cloneDataSource(this.state.ds, props.data) })
-	}
 
 	render() {
 		return (
@@ -47,27 +35,21 @@ export default class TodoListSection extends Component {
 						/>
 					</Touchable>
 				</View>
-				<ListView
-					dataSource={ this.state.ds }
-					renderRow={ this.renderRow }
-					enableEmptySections={ true }
-				/>
+				<View>
+					{ Data.values(this.props.data).map(this.renderRow) }
+				</View>
 			</View>
 		)
 	}
 
-	cloneDataSource = (ds, data) => {
-		return ds.cloneWithRows(data)
-	}
-
-	renderRow = (item, sectionID, rowID) => {
+	renderRow = (item) => {
 		return (
 			<TodoItem
 				{ ...item }
-				key={ rowID }
-				change={ this.props.changeItem.bind(null, rowID) }
-				remove={ this.props.removeItem.bind(null, rowID) }
-				edit={ this.props.goToEditItem.bind(null, rowID) }
+				key={ Item.id(item) }
+				change={ this.props.changeItem.bind(null, Item.id(item)) }
+				remove={ this.props.removeItem.bind(null, Item.id(item)) }
+				edit={ this.props.goToEditItem.bind(null, Item.id(item)) }
 			/>
 		)
 	}
