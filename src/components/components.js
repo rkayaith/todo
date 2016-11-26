@@ -98,7 +98,7 @@ export class ActionButton extends Component {
 }
 
 export class TextInputExpanding extends Component {
-	state = { height: -1 }
+	state = { height: 0 }
 	render() {
 		return (
 			<View>
@@ -106,10 +106,11 @@ export class TextInputExpanding extends Component {
 					{ ...this.props }
 					multiline={ true }
 					style={ [this.props.style, { height: this.state.height }] }
+					onChange={ ({ nativeEvent }) => {
+						this.setState({ height: nativeEvent.contentSize.height })
+						this.props.onChange && this.props.onChange()
+					}}
 					onContentSizeChange={ ({ nativeEvent }) => {
-						if (this.state.height !== -1) {
-							LayoutAnimation.easeInEaseOut()
-						}
 						this.setState({ height: nativeEvent.contentSize.height })
 						this.props.onContentSizeChange && this.props.onContentSizeChange()
 					}}
