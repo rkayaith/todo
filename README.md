@@ -9,7 +9,6 @@ TODO:
 
 	Features:
 		- save item changes on app close
-		- navigation using android back button
 		- countdown to urgent date in list
 		- undo button
 

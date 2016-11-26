@@ -4,7 +4,7 @@ import { View } from 'react-native'
 import ItemEditor from '../editor/ItemEditor'
 
 import styles, { colors } from '../styles'
-import { Toolbar, StatusBar, ColorTransition } from '../components'
+import { Toolbar, StatusBar, ColorTransition, BackAndroid } from '../components'
 
 import * as Item from '../../modules/Item'
 
@@ -29,7 +29,7 @@ export default class EditItemScene extends Component {
 					duration={ 335 }>
 					<Toolbar
 						title="Edit Item"
-						style={{ backgroundColor: colors.invisible }}
+						style={{ backgroundColor: colors.transparent }}
 						navIconName="arrow-back"
 						onIconClicked={ this.done }
 						actions={ [{ title: "Remove item", iconName: "delete", show: 'always' }] }
@@ -47,6 +47,7 @@ export default class EditItemScene extends Component {
 					item={ this.state }
 					change={ this.setState.bind(this) }
 				/>
+				<BackAndroid onPress={ this.done }/>
 			</View>
 		)
 	}

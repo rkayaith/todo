@@ -2,7 +2,8 @@ import VectorIcon from 'react-native-vector-icons/MaterialIcons'
 import React, { Component } from 'react'
 import {
 	View, TextInput, Animated, TouchableNativeFeedback, TouchableWithoutFeedback,
-	StatusBar as RCTStatusBar, Modal as RCTModal, LayoutAnimation, StyleSheet, KeyboardAvoidingView
+	StatusBar as RCTStatusBar, Modal as RCTModal, BackAndroid as RCTBackAndroid, AppState as RCTAppState,
+	LayoutAnimation, StyleSheet, KeyboardAvoidingView
 } from 'react-native'
 
 import { colors, style } from './styles'
@@ -205,6 +206,20 @@ export class ColorTransition extends Component {
 	}
 }
 
+export class BackAndroid extends Component {
+	componentDidMount() {
+		RCTBackAndroid.addEventListener('hardwareBackPress', this.onPress)
+	}
+	componentWillUnmount() {
+		RCTBackAndroid.removeEventListener('hardwareBackPress', this.onPress)
+	}
+	render() { return null }
+	onPress = () => {
+		this.props.onPress && this.props.onPress()
+		return !this.props.exitApp
+	}
+}
+
 const styles = StyleSheet.create({
 	...style,
 	actionButton: {
@@ -215,9 +230,7 @@ const styles = StyleSheet.create({
 	},
 	modal: {
 		flex: 1,
-		// backgroundColor: colors.white,
 		backgroundColor: colors.alpha(colors.black, 0.5),
-		// elevation: 12,
 		justifyContent: 'center',
 		alignItems: 'center',
 	}

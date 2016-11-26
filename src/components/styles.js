@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native'
 // material design colors
 const md_colors = {
 
-	invisible: "#00000000",
+	transparent: "#00000000",
 
 	white: "#ffffff",
 	black: "#000000",
