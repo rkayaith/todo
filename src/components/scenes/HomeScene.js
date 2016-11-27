@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, ScrollView, Text } from 'react-native'
+import { View, ScrollView, Text, LayoutAnimation } from 'react-native'
 
 import TodoList from '../todolist/TodoList'
 
@@ -10,6 +10,22 @@ import * as Data from '../../modules/Data'
 import * as Item from '../../modules/Item'
 
 export default class HomeScene extends Component {
+
+	constructor(props) {
+		super(props)
+		this.state = { data: props.data }
+	}
+
+	componentWillReceiveProps(props) {
+		if (props.focused) {
+			// Only update data while the scene is focused
+			// This causes a nice update animation when the
+			// scene becomes focused (e.g. after editing an item)
+			LayoutAnimation.easeInEaseOut()
+			this.setState({ data: props.data })
+		}
+	}
+
 	render() {
 		return (
 			<View style={ styles.scene }>
@@ -28,12 +44,12 @@ export default class HomeScene extends Component {
 							case 0:
 								// check all items in the list
 								return this.props.changeItem(
-									Data.keys(this.props.data),	{ checked: true }
+									Data.keys(this.state.data),	{ checked: true }
 								)
 							case 1:
 								// remove all checked items in the list
 								return this.props.removeItem(
-									Data.keys(Data.filter(this.props.data, Item.isChecked))
+									Data.keys(Data.filter(this.state.data, Item.isChecked))
 								)
 							case 2:
 								return this.props.resetData()
@@ -41,7 +57,7 @@ export default class HomeScene extends Component {
 					}}
 				/>
 				<TodoList
-					data={ this.props.data }
+					data={ this.state.data }
 					changeItem={ this.props.changeItem }
 					removeItem={ this.props.removeItem }
 					notifSettings={ this.props.notifSettings }

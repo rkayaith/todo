@@ -15,10 +15,11 @@ import styles from './styles'
 
 export default class TodoApp extends Component {
 
-    state = { data: Data.emptyData(), notifSettings: Notifications.defaultSettings() }
+    state = { scene: null, data: Data.emptyData(), notifSettings: Notifications.defaultSettings() }
     refreshTimeout = null
 
-    // App lifecycle
+
+    // App lifecycle methods
     constructor(props) {
         super(props)
         UIManager.setLayoutAnimationEnabledExperimental(true)
@@ -35,10 +36,6 @@ export default class TodoApp extends Component {
 
     componentWillUnmount() {
         AppState.removeEventListener('change', this.onAppStateChange)
-    }
-
-    componentWillUpdate(props, state) {
-        LayoutAnimation.easeInEaseOut()
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -73,6 +70,7 @@ export default class TodoApp extends Component {
                         case 'home': return (
                             <HomeScene
                                 data={ this.state.data }
+                                focused={ this.state.scene === 'home' }
                                 changeItem={ (id, changes) => this.setData(Data.change(this.data(), id, changes)) }
                                 removeItem={ id => this.setData(Data.remove(this.data(), id)) }
                                 notifSettings={ this.state.notifSettings }
@@ -101,6 +99,11 @@ export default class TodoApp extends Component {
                     return null
                 }}
                 configureScene={ () => Navigator.SceneConfigs.FloatFromRight }
+                onDidFocus={ route => {
+                    // setting state immediately seems to cause issues with LayoutAnimation
+                    // 0 delay setTimeout is enough to fix it
+                    setTimeout(() => this.setState({ scene: route.id }))
+                }}
             />
         )
     }

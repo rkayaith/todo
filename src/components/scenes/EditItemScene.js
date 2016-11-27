@@ -15,8 +15,10 @@ export default class EditItemScene extends Component {
 		this.state = props.item
 	}
 
-	componentWillReceiveProps(props) {
-		this.setState(props.item)
+	componentDidUpdate(prevProps, prevState) {
+		if (prevState !== this.state) {
+			this.props.change(Item.fromObj(this.state))
+		}
 	}
 
 	render() {
@@ -31,7 +33,7 @@ export default class EditItemScene extends Component {
 						title="Edit Item"
 						style={{ backgroundColor: colors.transparent }}
 						navIconName="arrow-back"
-						onIconClicked={ this.done }
+						onIconClicked={ this.props.navigator.pop }
 						actions={ [{ title: "Remove item", iconName: "delete", show: 'always' }] }
 						onActionSelected={ action => {
 							switch (action) {
@@ -47,13 +49,9 @@ export default class EditItemScene extends Component {
 					item={ this.state }
 					change={ this.setState.bind(this) }
 				/>
-				<BackAndroid onPress={ this.done }/>
+				<BackAndroid onPress={ this.props.navigator.pop }/>
 			</View>
 		)
 	}
 
-	done = () => {
-		this.props.change(Item.fromObj(this.state))
-		this.props.navigator.pop()
-	}
 }

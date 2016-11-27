@@ -44,7 +44,6 @@ export default class ItemEditor extends Component {
 					change={ this.props.change }
 				/>
 
-
 				<View style={ styles.contentRow }>
 					<Icon style={ styles.contentIcon } { ...Item.icon(2) } iconSize={ 24 }/>
 					<View style={ styles.contentContainer }>
@@ -59,13 +58,14 @@ export default class ItemEditor extends Component {
 				</View>
 
 				<View style={ styles.divider }/>
-					<TextInputExpanding
-						style={ styles.note }
-						value={ this.props.item.note }
-						placeholder="Note"
-						underlineColorAndroid={ colors.alpha(colors.black, 0.1) }
-						onChangeText={ note => this.props.change({ note }) }
-					/>
+
+				<TextInputExpanding
+					style={ styles.note }
+					value={ this.props.item.note }
+					placeholder="Note"
+					underlineColorAndroid={ colors.alpha(colors.black, 0.1) }
+					onChangeText={ note => this.props.change({ note }) }
+				/>
 
 			</View>
 		)
@@ -78,9 +78,8 @@ const styles = StyleSheet.create({
 	...editorstyle,
 	divider: {
 		height: 0,
-		opacity: 0.12,
 		borderBottomWidth: 1,
-		borderColor: colors.black,
+		borderColor: colors.alpha(colors.black, 0.12),
 		marginVertical: 4,
 		marginLeft: 72,
 		marginRight: 16,
