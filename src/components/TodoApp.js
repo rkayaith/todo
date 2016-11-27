@@ -8,6 +8,7 @@ import EditItemScene from './scenes/EditItemScene'
 
 import * as Data from '../modules/Data'
 import * as Item from '../modules/Item'
+import * as Storage from '../modules/Storage'
 import * as Notifications from '../modules/Notifications'
 
 import styles from './styles'
@@ -25,11 +26,11 @@ export default class TodoApp extends Component {
 
     async componentDidMount() {
         Notifications.init()
+        Notifications.clearAll()
 
         AppState.addEventListener('change', this.onAppStateChange)
 
-        this.setNotifSettings(await Notifications.getStoredSettings())
-        this.setData(await Data.getStoredData())
+        this.setState(await Storage.getState())
     }
 
     componentWillUnmount() {
@@ -41,24 +42,24 @@ export default class TodoApp extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (prevState.data !== this.state.data) {
-            Data.setStoredData(this.state.data)
-            this.scheduleRefresh(this.state.data)
+        this.scheduleRefresh(this.state.data)
+        if (__DEV__) {
+            // save state on every update since reloading app doesn't trigger onBackground()
+            Storage.setState(this.state)
         }
-        if (prevState.notifSettings !== this.state.notifSettings) {
-            Notifications.setStoredSettings(this.state.notifSettings)
-        }
-        this.scheduleNotifications(this.state.data, this.state.notifSettings)
     }
 
     // App is resumed. Not called on initial mounting
     onActive() {
+        Notifications.clearAll()
         this.refresh()
         this.scheduleRefresh(this.state.data)
     }
 
     // App is closed
     onBackground() {
+        Storage.setState(this.state)
+        this.scheduleNotifications(this.state.data, this.state.notifSettings)
         clearTimeout(this.refreshTimeout)
     }
 

@@ -11,6 +11,28 @@ import * as Item from './Item'
  *   }
  */
 
+
+// String transformations for storage
+export function toString(data) {
+	return JSON.stringify(data)
+}
+
+export function fromString(string) {
+	let data = JSON.parse(string)
+	if (data) {
+		// value of Infinity gets stored as null when stringified, so we restore it
+		for (let id in data) {
+			if (data[id].urgent === null) {
+				data[id].urgent = Infinity
+			}
+		}
+		return data
+	} else {
+		return emptyData()
+	}
+}
+
+
 // Query data
 export function keys(data) {
 	return Object.keys(data)
@@ -52,27 +74,6 @@ export function sort(data, sortFn) {
 	return fromArr(values(data).sort(sortFn))
 }
 
-// Get/Set data from/in AsyncStorage
-export async function getStoredData() {
-	let data = JSON.parse(await AsyncStorage.getItem('data'))
-	if (data) {
-		console.log('Data.getStoredData: got data from storage')
-		// value of Infinity gets stored as null when stringified, so we restore it
-		for (let id in data) {
-			if (data[id].urgent === null) {
-				data[id].urgent = Infinity
-			}
-		}
-		return data
-	}
-	return emptyData()
-}
-
-export async function setStoredData(data) {
-	await AsyncStorage.setItem('data', JSON.stringify(data))
-	console.log("Data.setStoredData: set data in storage")
-}
-
 
 // Default structures
 export function emptyData() {
@@ -80,20 +81,17 @@ export function emptyData() {
 }
 
 export function mockData() {
-	return fromArr(
-		[
-			{ text: 'Urgent important', checked: true, urgent: -100000, important: true },
-			{ text: 'Urgent important2', checked: false, urgent: 0, important: true },
-			{ text: 'Urgent important3', checked: false, urgent: Date.now(), important: true },
-			{ text: 'Urgent not important', checked: true, urgent: -100000, important: false },
-			{ text: 'Urgent not important2', checked: false, urgent: 0, important: false },
-			{ text: 'Not urgent important', checked: true, urgent: Date.now() + 60 * 1000, important: true },
-			{ text: 'Not urgent important2', checked: false, urgent: Infinity, important: true },
-			{ text: 'Not urgent not important', checked: true, urgent: Infinity, important: false },
-			{ text: 'Not urgent not important2', checked: false, urgent: Infinity, important: false },
-		]
-		.map(Item.fromObj)
-	)
+	return fromArr([
+		{ text: 'Urgent important', checked: true, urgent: -100000, important: true },
+		{ text: 'Urgent important2', checked: false, urgent: 0, important: true },
+		{ text: 'Urgent important3', checked: false, urgent: Date.now(), important: true },
+		{ text: 'Urgent not important', checked: true, urgent: -100000, important: false },
+		{ text: 'Urgent not important2', checked: false, urgent: 0, important: false },
+		{ text: 'Not urgent important', checked: true, urgent: Date.now() + 60 * 1000, important: true },
+		{ text: 'Not urgent important2', checked: false, urgent: Infinity, important: true },
+		{ text: 'Not urgent not important', checked: true, urgent: Infinity, important: false },
+		{ text: 'Not urgent not important2', checked: false, urgent: Infinity, important: false },
+	].map(Item.fromObj))
 }
 
 

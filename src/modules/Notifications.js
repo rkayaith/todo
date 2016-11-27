@@ -11,6 +11,20 @@ import * as Item from './Item'
  */
 
 
+// String transformations for storing settings
+export function toString(settings) {
+    return JSON.stringify(settings)
+}
+
+export function fromString(string) {
+	let settings = JSON.parse(string)
+	if (settings) {
+		return settings
+	}
+	return defaultSettings()
+}
+
+
 // PushNotification package wrappers
 // see https://github.com/zo0r/react-native-push-notification
 export function init() {
@@ -111,22 +125,6 @@ function notification(opts)  {
 }
 
 const SUMMARY_ID = '8888'
-
-
-// Get/Set settings from/in AsyncStorage
-export async function getStoredSettings() {
-	let settings = JSON.parse(await AsyncStorage.getItem('notifSettings'))
-	if (settings) {
-		console.log('Notifications.getStoredSettings: got settings from storage')
-		return settings
-	}
-	return defaultSettings()
-}
-
-export async function setStoredSettings(settings) {
-	await AsyncStorage.setItem('notifSettings', JSON.stringify(settings))
-	console.log("Notifications.setStoredSettings: set settings in storage")
-}
 
 
 // Default Settings
