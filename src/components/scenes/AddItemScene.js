@@ -11,9 +11,6 @@ import * as Item from '../../modules/Item'
 export default class AddItemScene extends Component {
 
 	state = Item.emptyItem()
-	componentWillReceiveProps(props) {
-		this.setState(Item.emptyItem())
-	}
 
 	render() {
 		return (
@@ -40,7 +37,8 @@ export default class AddItemScene extends Component {
 				</ColorTransition>
 				<ItemEditor
 					item={ this.state }
-					change={ this.setState.bind(this) }>
+					change={ this.setState.bind(this) }
+					focusTitle={ true }>
 				</ItemEditor>
 				<BackAndroid onPress={ this.props.navigator.pop }/>
 			</View>

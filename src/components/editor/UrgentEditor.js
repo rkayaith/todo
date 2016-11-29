@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, DatePickerAndroid, TimePickerAndroid, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, DatePickerAndroid, TimePickerAndroid } from 'react-native'
 
 import { Touchable, Icon, Modal } from '../components'
 

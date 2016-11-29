@@ -18,7 +18,6 @@ TODO:
 		- improve icons in notifications
 		- improve text formatting in notifications (fork react-native-push-notification and use Html.fromHtml())
 
-		- improve item editor behaviour when keyboard is open
 		- add section headers in item editor
 
 		- fix TouchableNativeFeedback bug where checking off an item that

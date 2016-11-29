@@ -7,8 +7,6 @@ export const editorstyle = {
 		height: 72,
 		flexDirection: 'row',
 		alignItems: 'center',
-		// paddingLeft: 16,
-		// paddingRight: 4,
 		paddingHorizontal: 16,
 	},
 	contentIcon: {

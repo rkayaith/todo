@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import { View, ScrollView, KeyboardAvoidingView, Text, TextInput, StyleSheet } from 'react-native'
+import { View, ScrollView, Text, TextInput, StyleSheet } from 'react-native'
 
 import UrgentEditor from './UrgentEditor'
 
 import { style, colors } from '../styles'
 import { editorstyle } from './editorstyles'
-import { TextInputExpanding, Touchable, CheckBox, Icon } from '../components'
+import { ExpandingTextInput, Touchable, CheckBox, Icon } from '../components'
 
 import * as Item from '../../modules/Item'
 
@@ -14,13 +14,18 @@ export default class ItemEditor extends Component {
 	render() {
 
 		return (
-			<View style={ styles.container } >
+			<ScrollView
+				style={ styles.container }
+				keyboardShouldPersistTaps={ true }>
 
-				<TextInputExpanding
+				<ExpandingTextInput
+					lineHeight={ 29 }
+					autoFocus={ this.props.focusTitle }
+					autoCapitalize='sentences'
 					style={ styles.title }
 					value={ this.props.item.text }
 					placeholder="Item Text"
-					underlineColorAndroid={ colors.alpha(colors.black, 0.1) }
+					underlineColorAndroid={ colors.alpha(colors.black, 0.12) }
 					onChangeText={ text => this.props.change({ text }) }
 				/>
 
@@ -59,15 +64,16 @@ export default class ItemEditor extends Component {
 
 				<View style={ styles.divider }/>
 
-				<TextInputExpanding
+				<ExpandingTextInput
+					lineHeight={ 20 }
 					style={ styles.note }
 					value={ this.props.item.note }
 					placeholder="Note"
-					underlineColorAndroid={ colors.alpha(colors.black, 0.1) }
+					underlineColorAndroid={ colors.alpha(colors.black, 0.12) }
 					onChangeText={ note => this.props.change({ note }) }
 				/>
 
-			</View>
+			</ScrollView>
 		)
 	}
 }
@@ -94,13 +100,13 @@ const styles = StyleSheet.create({
 		fontSize: 24,
 		marginBottom: 8,
 		marginTop: 24,
-		marginHorizontal: 12,
+		marginHorizontal: 16,
 	},
 	note: {
 		...style.text,
 		fontSize: 18,
 		marginBottom: 8,
 		marginTop: 24,
-		marginHorizontal: 12,
+		marginHorizontal: 16,
 	}
 })
