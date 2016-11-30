@@ -8,7 +8,6 @@ TODO:
 	- break up components.js
 
 	Features:
-		- save item changes on app close
 		- countdown to urgent date in list
 		- undo button
 
@@ -22,6 +21,5 @@ TODO:
 
 		- fix TouchableNativeFeedback bug where checking off an item that
 			moves as a result won't show release feedback
-		- control borderless Touchable size
 
-		- improve animations (use Animated API instead of LayoutAnimation)
+		- improve item check animation
