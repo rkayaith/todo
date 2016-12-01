@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, ScrollView, Text, TextInput, StyleSheet } from 'react-native'
+import { View, ScrollView, Text, TextInput } from 'react-native'
 
 import UrgentEditor from './UrgentEditor'
 
@@ -79,8 +79,7 @@ export default class ItemEditor extends Component {
 }
 
 const icon_size = 45
-const styles = StyleSheet.create({
-	...style,
+const styles = style({
 	...editorstyle,
 	divider: {
 		height: 0,

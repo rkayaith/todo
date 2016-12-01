@@ -11,7 +11,7 @@ import * as Item from '../modules/Item'
 import * as Storage from '../modules/Storage'
 import * as Notifications from '../modules/Notifications'
 
-import styles from './styles'
+import { style } from './styles'
 
 export default class TodoApp extends Component {
 
@@ -169,3 +169,5 @@ export default class TodoApp extends Component {
     }
 
 }
+
+const styles = style()

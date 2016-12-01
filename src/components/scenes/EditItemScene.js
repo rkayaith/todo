@@ -3,7 +3,7 @@ import { View } from 'react-native'
 
 import ItemEditor from '../editor/ItemEditor'
 
-import styles, { colors } from '../styles'
+import { style, colors } from '../styles'
 import { Toolbar, StatusBar, ColorTransition, BackAndroid } from '../common'
 
 import * as Item from '../../modules/Item'
@@ -55,3 +55,5 @@ export default class EditItemScene extends Component {
 	}
 
 }
+
+const styles = style()

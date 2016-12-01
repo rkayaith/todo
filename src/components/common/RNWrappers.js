@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {
-	View, TouchableNativeFeedback, TouchableWithoutFeedback, StyleSheet,
+	View, TouchableNativeFeedback, TouchableWithoutFeedback,
 	StatusBar as RNStatusBar, Modal as RNModal, BackAndroid as RNBackAndroid,
 } from 'react-native'
 
@@ -77,8 +77,7 @@ export const Modal = ({ style, children, ...props }) => (
 	</RNModal>
 )
 
-const styles = StyleSheet.create({
-	...style,
+const styles = style({
 	modal: {
 		flex: 1,
 		backgroundColor: colors.alpha(colors.black, 0.5),

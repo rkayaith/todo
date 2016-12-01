@@ -3,7 +3,7 @@ import { View, ScrollView, Text, LayoutAnimation } from 'react-native'
 
 import TodoList from '../todolist/TodoList'
 
-import styles, { colors } from '../styles'
+import { style, colors } from '../styles'
 import { Toolbar, StatusBar, ActionButton } from '../common'
 
 import * as Data from '../../modules/Data'
@@ -78,3 +78,5 @@ export default class HomeScene extends Component {
 		this.props.navigator.push({ id: 'edit-item', itemId })
 	}
 }
+
+const styles = style()

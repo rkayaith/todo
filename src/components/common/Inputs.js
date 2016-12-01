@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { View, TextInput, StyleSheet } from 'react-native'
+import { View, TextInput } from 'react-native'
 
-import { colors } from '../styles'
+import { style, colors } from '../styles'
 
 export class ExpandingTextInput extends Component {
 	state = { height: 0, width: 0, x: 0, y: 0 }
@@ -63,7 +63,7 @@ export class ExpandingTextInput extends Component {
 	}
 }
 
-const styles = StyleSheet.create({
+const styles = style({
 	underline: {
 		height: 0,
 		borderBottomWidth: 1,

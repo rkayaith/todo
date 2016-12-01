@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import { View, ScrollView, StyleSheet } from 'react-native'
+import { View, ScrollView } from 'react-native'
 
 import TodoListSection from './TodoListSection'
 
-import { colors } from '../styles'
+import { style, colors } from '../styles'
 
 import * as Item from '../../modules/Item'
 import * as Data from '../../modules/Data'
@@ -38,7 +38,7 @@ export default class TodoList extends Component {
 
 }
 
-const styles = StyleSheet.create({
+const styles = style({
 	footer: {
 		height: 80,
 	},

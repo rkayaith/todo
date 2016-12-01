@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, TextInput, StyleSheet, TouchableNativeFeedback } from 'react-native'
+import { View, Text } from 'react-native'
 
 import { style, colors } from '../styles'
 import { Touchable, CheckBox, Icon } from '../common'
@@ -42,8 +42,7 @@ export default class TodoItem extends Component {
     }
 }
 
-const styles = StyleSheet.create({
-    ...style,
+const styles = style({
     container: {
 		flexDirection: 'row',
 		alignItems: 'center',

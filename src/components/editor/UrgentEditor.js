@@ -160,8 +160,7 @@ export default class UrgentEditor extends Component {
 	}
 }
 
-const styles = StyleSheet.create({
-	...style,
+const styles = style({
 	...editorstyle,
 	urgentContainer: {
 		flexDirection: 'row',

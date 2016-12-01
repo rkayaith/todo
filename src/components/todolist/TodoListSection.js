@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text } from 'react-native'
 
 import TodoItem from './TodoItem'
 
@@ -62,8 +62,7 @@ export default class TodoListSection extends Component {
 
 const CONTENT_ALPHA = 0.87
 
-const styles = StyleSheet.create({
-	...style,
+const styles = style({
 	header: {
 		alignItems: 'center',
 		flexDirection: 'row',

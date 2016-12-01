@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View } from 'react-native'
 
 import { Icon } from './Icons'
 import { Touchable } from './RNWrappers'
 
-import { colors } from '../styles'
+import { style, colors } from '../styles'
 
 export const CheckBox = ({ value, ripple, hitSlop, borderless, onValueChange, ...props }) => (
 	<Touchable
@@ -46,7 +46,7 @@ export class ActionButton extends Component {
 	}
 }
 
-const styles = StyleSheet.create({
+const styles = style({
 	actionButton: {
 		height: 56, width: 56, borderRadius: 56/2,
 	},
