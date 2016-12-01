@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { View, Text, TextInput, StyleSheet, TouchableNativeFeedback } from 'react-native'
 
 import { style, colors } from '../styles'
-import { Touchable, CheckBox, Icon } from '../components'
+import { Touchable, CheckBox, Icon } from '../common'
 
 import * as Item from '../../modules/Item'
 

@@ -5,7 +5,6 @@ Written in JavaScript with React Native.
 TODO:
 
 	- check if performance has degraded
-	- break up components.js
 
 	Features:
 		- countdown to urgent date in list

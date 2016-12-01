@@ -4,7 +4,7 @@ import { View, Text, StyleSheet } from 'react-native'
 import TodoItem from './TodoItem'
 
 import { style, colors } from '../styles'
-import { Icon, Touchable } from '../components'
+import { Icon, Touchable } from '../common'
 
 import * as Item from '../../modules/Item'
 import * as Data from '../../modules/Data'

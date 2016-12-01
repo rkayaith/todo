@@ -5,7 +5,7 @@ import UrgentEditor from './UrgentEditor'
 
 import { style, colors } from '../styles'
 import { editorstyle } from './editorstyles'
-import { ExpandingTextInput, Touchable, CheckBox, Icon } from '../components'
+import { ExpandingTextInput, Touchable, CheckBox, Icon } from '../common'
 
 import * as Item from '../../modules/Item'
 

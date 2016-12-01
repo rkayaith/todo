@@ -4,7 +4,7 @@ import { View, ScrollView, Text, LayoutAnimation } from 'react-native'
 import TodoList from '../todolist/TodoList'
 
 import styles, { colors } from '../styles'
-import { Toolbar, StatusBar, ActionButton } from '../components'
+import { Toolbar, StatusBar, ActionButton } from '../common'
 
 import * as Data from '../../modules/Data'
 import * as Item from '../../modules/Item'

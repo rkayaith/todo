@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, DatePickerAndroid, TimePickerAndroid } from 'react-native'
 
-import { Touchable, Icon, Modal } from '../components'
+import { Touchable, Icon, Modal } from '../common'
 
 import { style, colors } from '../styles'
 import { editorstyle } from './editorstyles'
