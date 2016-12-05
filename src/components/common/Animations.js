@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Animated } from 'react-native'
+import { View, Animated, Easing } from 'react-native'
 
 import { colors } from '../styles'
 
@@ -8,41 +8,40 @@ export class ColorTransition extends Component {
 		super(props)
 		this.state = {
 			animValue: new Animated.Value(0),
-			bgPrev: colors.alpha(props.color, 0),
-			bgNext: props.color,
+			current: props.initialColor || props.color,
 		}
 	}
 	componentDidMount() {
-		this.animateBg(this.props)
+		this.transition(this.state.current, this.props.color, this.props.duration, this.props.value)
 	}
 	componentWillReceiveProps(props) {
-		this.animateBg(props)
+		if (props.color !== this.props.color) {
+			this.transition(this.props.color, props.color, props.duration, props.value)
+		}
 	}
 	render() {
-		let backgroundColor = this.state.animValue.interpolate({
-			inputRange: [0, 1],
-			outputRange: [this.state.bgPrev, this.state.bgNext],
-		})
-		return (
-			<View style={ this.props.style }>
-				<Animated.View style={{ backgroundColor }}>
-					{ this.props.children }
-				</Animated.View>
-			</View>
-		)
+		return null
 	}
-	animateBg = (props) => {
-		if (!props.color) return
+	transition = (prev, next, duration, cb) => {
+		// alert('' + prev + ' ' + next + ' ')
+		// duration = duration + 10000
 		this.state.animValue.stopAnimation(value => {
-			// find the current background color based on the values it was animating between
-			// and how far it got into the animation
+			// Find the current background color based on the values it was
+			// animating between and how far it got into the animation
+			let current = interpolate(this.state.current, prev, value)
 			let animValue = new Animated.Value(0)
-			let bgPrev = interpolate(this.state.bgPrev, this.state.bgNext, value)
-			let bgNext = props.color
 
-			// Start a new animation between the current background color and
-			this.setState({ animValue, bgPrev, bgNext })
-			Animated.timing(animValue, { toValue: 1, duration: props.duration }).start()
+			// Call back with an AnimatedValue that can be used by an Animated component
+			cb && cb(animValue.interpolate({
+				inputRange: [0, 1],
+				outputRange: [current, next],
+			}))
+
+			this.setState({ animValue, current }, () => {
+				// Start a new animation between the current background color and
+				Animated.timing(animValue, { duration, toValue: 1, easing: Easing.linear }).start()
+			})
+
 		})
 
 		function interpolate(color1, color2, interpValue) {

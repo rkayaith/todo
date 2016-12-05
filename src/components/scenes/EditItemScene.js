@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View } from 'react-native'
+import { View, Animated } from 'react-native'
 
 import ItemEditor from '../editor/ItemEditor'
 
@@ -26,9 +26,11 @@ export default class EditItemScene extends Component {
 			<View style={ styles.scene }>
 				<StatusBar backgroundColor={ Item.colorDark(this.state) }/>
 				<ColorTransition
-					style={ styles.toolbar }
 					color={ Item.color(this.state) }
-					duration={ 335 }>
+					duration={ 275 }
+					value={ color => this.setState({ color }) }
+				/>
+				<Animated.View style={ [styles.toolbar, { backgroundColor: this.state.color }] }>
 					<Toolbar
 						title="Edit Item"
 						style={{ backgroundColor: colors.transparent }}
@@ -44,7 +46,7 @@ export default class EditItemScene extends Component {
 							}
 						}}
 					/>
-				</ColorTransition>
+				</Animated.View>
 				<ItemEditor
 					item={ this.state }
 					change={ this.setState.bind(this) }
