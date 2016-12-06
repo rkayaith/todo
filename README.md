@@ -16,8 +16,6 @@ TODO:
 		- improve icons in notifications
 		- improve text formatting in notifications (fork react-native-push-notification and use Html.fromHtml())
 
-		- add section headers in item editor
-
 		- fix TouchableNativeFeedback bug where checking off an item that
 			moves as a result won't show release feedback
 

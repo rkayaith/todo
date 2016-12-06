@@ -15,7 +15,11 @@ function exportStyle() {
 		},
 		text: {
 			color: colors.grey900,
-			fontSize: 15,
+			fontSize: 14,
+			fontStyle: 'normal',
+		},
+		placeholder: {
+			fontStyle: 'italic',
 		},
 		toolbar: {
 			elevation: 4,

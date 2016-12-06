@@ -4,7 +4,7 @@ import { View, Animated } from 'react-native'
 import ItemEditor from '../editor/ItemEditor'
 
 import { style, colors } from '../styles'
-import { Toolbar, StatusBar, ColorTransition, BackAndroid } from '../common'
+import { Toolbar, BackAndroid } from '../common'
 
 import * as Item from '../../modules/Item'
 
@@ -24,12 +24,6 @@ export default class EditItemScene extends Component {
 	render() {
 		return (
 			<View style={ styles.scene }>
-				<StatusBar backgroundColor={ Item.colorDark(this.state) }/>
-				<ColorTransition
-					color={ Item.color(this.state) }
-					duration={ 275 }
-					value={ color => this.setState({ color }) }
-				/>
 				<Animated.View style={ [styles.toolbar, { backgroundColor: this.state.color }] }>
 					<Toolbar
 						title="Edit Item"
@@ -50,6 +44,7 @@ export default class EditItemScene extends Component {
 				<ItemEditor
 					item={ this.state }
 					change={ this.setState.bind(this) }
+					onColorChange={ color => this.setState({ color }) }
 				/>
 				<BackAndroid onPress={ this.props.navigator.pop }/>
 			</View>

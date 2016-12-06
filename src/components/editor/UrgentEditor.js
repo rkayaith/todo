@@ -73,7 +73,12 @@ export default class UrgentEditor extends Component {
 					style={ styles.urgentButton }
 					onPress={ () => this.showPicker(props.picker) }>
 					<Text style={ styles.urgentText }>{ props.text }</Text>
-					<Icon style={ styles.arrow } name="arrow-drop-down" iconSize={ 15 }/>
+					<Icon
+						iconSize={ 15 }
+						style={ styles.arrow }
+						name="arrow-drop-down"
+						color={ editorstyle.contentText.color }
+					/>
 				</Touchable>
 			)
 		}

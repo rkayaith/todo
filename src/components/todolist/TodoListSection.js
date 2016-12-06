@@ -72,7 +72,7 @@ const styles = style({
 	headerText: {
 		...style.text,
 		flex: 1,
-		fontSize: 15,
+		fontSize: 16,
 		color: colors.alpha(colors.white, CONTENT_ALPHA),
 		fontFamily: 'sans-serif-medium',
 		marginLeft: 5,

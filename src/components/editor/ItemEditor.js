@@ -1,16 +1,16 @@
 import React, { Component } from 'react'
-import { View, ScrollView, Text, TextInput } from 'react-native'
+import { View, ScrollView, Text, TextInput, Animated } from 'react-native'
 
 import UrgentEditor from './UrgentEditor'
 
 import { style, colors } from '../styles'
 import { editorstyle } from './editorstyles'
-import { ExpandingTextInput, Touchable, CheckBox, Icon } from '../common'
+import { StatusBar, ColorTransition, ExpandingTextInput, Touchable, CheckBox, Icon } from '../common'
 
 import * as Item from '../../modules/Item'
 
 export default class ItemEditor extends Component {
-
+	state = {}
 	render() {
 
 		return (
@@ -18,13 +18,33 @@ export default class ItemEditor extends Component {
 				style={ styles.container }
 				keyboardShouldPersistTaps={ true }>
 
+				<StatusBar backgroundColor={ Item.colorDark(this.props.item) }/>
+
+				<ColorTransition
+					color={ Item.color(this.props.item) }
+					duration={ 275 }
+					value={ this.props.onColorChange }
+				/>
+
+				<ColorTransition
+					color={ Item.colorDark(this.props.item) }
+					duration={ 275 }
+					value={ colorDark => this.setState({ colorDark }) }
+				/>
+
+				<Animated.Text
+					style={ [styles.heading, { color: this.state.colorDark }] }>
+					Title
+				</Animated.Text>
+
 				<ExpandingTextInput
 					lineHeight={ 29 }
 					autoFocus={ this.props.focusTitle }
 					autoCapitalize='sentences'
 					style={ styles.title }
 					value={ this.props.item.text }
-					placeholder="Item Text"
+					placeholder="Write a task here"
+					placeholderStyle={ styles.placeholder }
 					underlineColorAndroid={ colors.alpha(colors.black, 0.12) }
 					onChangeText={ text => this.props.change({ text }) }
 				/>
@@ -64,11 +84,17 @@ export default class ItemEditor extends Component {
 
 				<View style={ styles.divider }/>
 
+				<Animated.Text
+					style={ [styles.heading, { color: this.state.colorDark }] }>
+					Note
+				</Animated.Text>
+
 				<ExpandingTextInput
 					lineHeight={ 20 }
 					style={ styles.note }
 					value={ this.props.item.note }
-					placeholder="Note"
+					placeholder="Enter a note"
+					placeholderStyle={ styles.placeholder }
 					underlineColorAndroid={ colors.alpha(colors.black, 0.12) }
 					onChangeText={ note => this.props.change({ note }) }
 				/>
@@ -81,31 +107,33 @@ export default class ItemEditor extends Component {
 const icon_size = 45
 const styles = style({
 	...editorstyle,
+	container: {
+		flex: 1,
+		backgroundColor: colors.white,
+		paddingHorizontal: 16,
+	},
 	divider: {
 		height: 0,
 		borderBottomWidth: 1,
 		borderColor: colors.alpha(colors.black, 0.12),
 		marginVertical: 4,
-		marginLeft: 72,
-		marginRight: 16,
+		marginLeft: 54,
 	},
-	container: {
-		flex: 1,
-		backgroundColor: colors.white,
+	heading: {
+		...style.text,
+		marginLeft: 4.5,
+		marginTop: 24,
+		marginBottom: -5,
 	},
 	title: {
 		...style.text,
 		fontFamily: 'sans-serif-medium',
 		fontSize: 24,
 		marginBottom: 8,
-		marginTop: 24,
-		marginHorizontal: 16,
 	},
 	note: {
 		...style.text,
 		fontSize: 18,
-		marginBottom: 8,
-		marginTop: 24,
-		marginHorizontal: 16,
+		marginBottom: 48,
 	}
 })
