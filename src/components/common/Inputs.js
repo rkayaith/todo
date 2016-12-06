@@ -1,7 +1,16 @@
 import React, { Component } from 'react'
-import { View, TextInput } from 'react-native'
+import { View, TextInput as RNTextInput } from 'react-native'
 
 import { style, colors } from '../styles'
+
+export const TextInput = ({ style, placeholderStyle, ...props }) => {
+	return (
+		<RNTextInput
+			style={ [style, props.value.length == 0 && placeholderStyle] }
+			{ ...props }
+		/>
+	)
+}
 
 export class ExpandingTextInput extends Component {
 	state = { height: 0, width: 0, x: 0, y: 0 }
