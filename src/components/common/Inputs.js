@@ -6,7 +6,7 @@ import { style, colors } from '../styles'
 export const TextInput = ({ style, placeholderStyle, ...props }) => {
 	return (
 		<RNTextInput
-			style={ [style, props.value.length == 0 && placeholderStyle] }
+			style={ [style, (!props.value || props.value.length == 0) && placeholderStyle] }
 			{ ...props }
 		/>
 	)
