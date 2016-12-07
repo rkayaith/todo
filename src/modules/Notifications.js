@@ -17,11 +17,7 @@ export function toString(settings) {
 }
 
 export function fromString(string) {
-	let settings = JSON.parse(string)
-	if (settings) {
-		return settings
-	}
-	return defaultSettings()
+	return JSON.parse(string) || defaultSettings()
 }
 
 

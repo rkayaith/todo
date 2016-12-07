@@ -18,18 +18,7 @@ export function toString(data) {
 }
 
 export function fromString(string) {
-	let data = JSON.parse(string)
-	if (data) {
-		// value of Infinity gets stored as null when stringified, so we restore it
-		for (let id in data) {
-			if (data[id].urgent === null) {
-				data[id].urgent = Infinity
-			}
-		}
-		return data
-	} else {
-		return emptyData()
-	}
+	return JSON.parse(string) || emptyData()
 }
 
 
@@ -66,12 +55,20 @@ export function remove(data, ids) {
 	return data
 }
 
-export function filter(data, filterFn) {
-	return fromArr(values(data).filter(filterFn))
+export function map(data, fn) {
+	data = clone(data)
+	for (id in data) {
+		data[id] = fn(data[id])
+	}
+	return data
 }
 
-export function sort(data, sortFn) {
-	return fromArr(values(data).sort(sortFn))
+export function filter(data, fn) {
+	return fromArr(values(data).filter(fn))
+}
+
+export function sort(data, fn) {
+	return fromArr(values(data).sort(fn))
 }
 
 

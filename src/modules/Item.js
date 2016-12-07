@@ -14,11 +14,11 @@ import { colors } from '../components/styles'
  */
 
 
-// Create item
+// Create item from object
 export function fromObj(obj) {
 	let item = emptyItem()
 	for (let prop in item) {
-		if (obj[prop] !== undefined) {
+		if (prop in obj) {
 			item[prop] = obj[prop]
 		}
 	}
@@ -27,6 +27,26 @@ export function fromObj(obj) {
 		item.urgent = Date.now()
 	}
 	return item
+}
+
+
+// String transformations for storage
+export function toString(item) {
+	item = fromObj(item)
+	// stringify Infinity
+	if (item.urgent === Infinity) {
+		item.urgent = 'Infinity'
+	}
+	return JSON.stringify(item)
+}
+
+export function fromString(string) {
+	let obj = JSON.parse(string)
+	// parse Infinity
+	if (obj.urgent === 'Infinity') {
+		obj.urgent = Infinity
+	}
+	return fromObj(obj)
 }
 
 
