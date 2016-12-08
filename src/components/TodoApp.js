@@ -6,6 +6,7 @@ import HomeScene from './scenes/HomeScene'
 import AddItemScene from './scenes/AddItemScene'
 import EditItemScene from './scenes/EditItemScene'
 
+import * as App from '../modules/App'
 import * as Data from '../modules/Data'
 import * as Item from '../modules/Item'
 import * as Storage from '../modules/Storage'
@@ -15,9 +16,8 @@ import { style } from './styles'
 
 export default class TodoApp extends Component {
 
-    state = { scene: null, data: Data.emptyData(), notifSettings: Notifications.defaultSettings() }
+    state = App.defaultState()
     refreshTimeout = null
-
 
     // App lifecycle methods
     constructor(props) {
@@ -26,12 +26,13 @@ export default class TodoApp extends Component {
     }
 
     async componentDidMount() {
+
         Notifications.init()
         Notifications.clearAll()
 
         AppState.addEventListener('change', this.onAppStateChange)
 
-        this.setState(await Storage.getState())
+        this.setState(await App.init())
     }
 
     componentWillUnmount() {
@@ -42,7 +43,7 @@ export default class TodoApp extends Component {
         this.scheduleRefresh(this.state.data)
         if (__DEV__) {
             // save state on every update since reloading app doesn't trigger onBackground()
-            Storage.setState(this.state)
+            App.saveState(this.state)
         }
     }
 
@@ -55,7 +56,7 @@ export default class TodoApp extends Component {
 
     // App is closed
     onBackground() {
-        Storage.setState(this.state)
+        App.saveState(this.state)
         this.scheduleNotifications(this.state.data, this.state.notifSettings)
         clearTimeout(this.refreshTimeout)
     }
@@ -75,7 +76,7 @@ export default class TodoApp extends Component {
                                 removeItem={ id => this.setData(Data.remove(this.data(), id)) }
                                 notifSettings={ this.state.notifSettings }
                                 setNotifSettings={ this.setNotifSettings }
-                                resetData={ () => this.setData(Data.mockData()) }
+                                loadMockData={ () => this.setData(Data.mockData()) }
                                 navigator={ navigator }
                             />
                         )

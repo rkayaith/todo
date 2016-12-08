@@ -1,6 +1,6 @@
 {
   "name": "TodoApp",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "build-android": "cd android && ./gradlew assembleRelease",
@@ -11,7 +11,8 @@
     "react": "^15.4.1",
     "react-native": "^0.38.0",
     "react-native-push-notification": "^2.2.0",
-    "react-native-vector-icons": "^3.0.0"
+    "react-native-vector-icons": "^3.0.0",
+    "semver": "^5.3.0"
   },
   "jest": {
     "preset": "jest-react-native"

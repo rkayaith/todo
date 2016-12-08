@@ -27,6 +27,13 @@ export default class HomeScene extends Component {
 	}
 
 	render() {
+		let actions = [
+			{ title: "Check all items", iconName: "done-all", show: 'always' },
+			{ title: "Remove checked items", iconName: "delete-sweep", show: 'always' },
+		]
+		if (__DEV__) {
+			actions.push({ title: "Load mock data", show: 'never' })
+		}
 		return (
 			<View style={ styles.scene }>
 				<StatusBar backgroundColor={ colors.primaryColorDark }/>
@@ -34,25 +41,23 @@ export default class HomeScene extends Component {
 					title='Todo List'
 					style={{ backgroundColor: colors.primaryColor }}
 					overflowIconName="more-vert"
-					actions={[
-						{ title: "Check all items", iconName: "done-all", show: 'always' },
-						{ title: "Remove checked items", iconName: "delete-sweep", show: 'always' },
-						{ title: "Load mock data", show: 'never' },
-					]}
+					actions={ actions }
 					onActionSelected={ action => {
 						switch (action) {
 							case 0:
 								// check all items in the list
-								return this.props.changeItem(
+								this.props.changeItem(
 									Data.keys(this.state.data),	{ checked: true }
 								)
+								break
 							case 1:
 								// remove all checked items in the list
-								return this.props.removeItem(
+								this.props.removeItem(
 									Data.keys(Data.filter(this.state.data, Item.isChecked))
 								)
+								break
 							case 2:
-								return this.props.resetData()
+								this.props.loadMockData(); break
 						}
 					}}
 				/>
