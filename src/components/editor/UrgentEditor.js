@@ -102,7 +102,12 @@ export default class UrgentEditor extends Component {
 		this.setState({ modalVisible: false })
 
 		let self = this
-		let date = new Date(Item.urgentTime(this.props.item) || Date.now())
+		let time = Item.urgentTime(this.props.item)
+		if (!time) {
+			// if the item doesn't have an urgent time set, use the date with minutes set to 0
+			time = new Date().setMinutes(0)
+		}
+		let date = new Date(time)
 
 		switch (picker) {
 			case 'modal':

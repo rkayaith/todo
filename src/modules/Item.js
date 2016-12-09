@@ -7,7 +7,7 @@ import { colors } from '../components/styles'
  *     id: string (uuid string)
  *     text: string,
  *     checked: bool,
- *     urgent: number | Infinity (unix timestamp for when item becomes urgent, Infinity for never)
+ *     urgent: number | Infinity | -Infinity (unix timestamp, Infinity for never, -Infinity for now)
  *     important: bool,
  *     note: string,
  *   }
@@ -56,8 +56,8 @@ export function isUrgent(item, time) {
 }
 
 export function urgentTime(item) {
-	let date = new Date(item.urgent)
-	if (isNaN(date.getTime())) return null
+	if (item.urgent === Infinity) return null
+	if (item.urgent === -Infinity) return Date.now()
 	return item.urgent
 }
 
