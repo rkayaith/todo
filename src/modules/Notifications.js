@@ -2,6 +2,8 @@ import { AsyncStorage } from 'react-native'
 
 import PushNotification from 'react-native-push-notification'
 
+import { colors } from '../components/styles'
+
 import * as Data from './Data'
 import * as Item from './Item'
 
@@ -60,33 +62,38 @@ export function summarize(itemList, time) {
     if (itemList.length < 1) return
     itemList = itemList.sort(Item.sort)
 
-    let numItems = 0
-    // sort items by level
-    let levels = Item.levels().reduce((levels, level) => {
+    let urgentItems = itemList.filter(item => Item.isUrgent(item, time))
+
+    let message = Item.levels().reduce((message, level) => {
         let items = itemList.filter(item => Item.level(item, time) === level)
         if (items.length > 0) {
-            numItems += items.length
-            levels.push({ level, items })
+            let s = `${Item.description(level)}:`
+            items.forEach(item => s += `\n • ${Item.text(item)}`)
+            return message.concat(s)
         }
-        return levels
+        return message
     }, [])
 
-    if (levels.length > 0) {
-        let bigText = levels.map(level => {
-            return [Item.description(level.level) + ':', ...level.items.map(Item.text)].join('\n • ')
-        })
-        notify(notification({
-            id: SUMMARY_ID,
-            title: "Things to do",
-            color: Item.color(levels[0].level),
-            message: bigText[0],                // short message only has items in the highest level
-            bigText: bigText.join('\n'),        // full message has all items
-            number: numItems > 1 ? numItems.toString() : null,
-            autoCancel: false,
-            ongoing: true,
-            vibrate: false,
-            playSound: false,
-        }), time)
+    notify(notification({
+        id: SUMMARY_ID,
+        title: "Task Summary",
+        color: colors.primaryColor,
+        message: message[0].replace(/\n/g, ''),     // short message only has items in the highest level
+        bigText: message.join('\n'),                // full message has all items
+        subText: urgentItems.length > 0 ?
+            plural(urgentItems.length, `${urgentItems.length} urgent task`) :
+            plural(itemList.length, `${itemList.length} task`),
+        number: itemList.length.toString(),
+        ongoing: true,
+        vibrate: false,
+        playSound: false,
+    }), time)
+
+    function plural(num, s) {
+        if (num === 1) {
+            return s
+        }
+        return s + 's'
     }
 }
 
@@ -94,6 +101,7 @@ export function summarize(itemList, time) {
 // Default notification properties
 function notification(opts)  {
     return {
+        group: 'TodoApp',
         message: "TodoApp Notification",
         largeIcon: "ic_launcher",
         smallIcon: "ic_notification",
