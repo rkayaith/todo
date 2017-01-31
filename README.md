@@ -7,13 +7,10 @@ Written in JavaScript using React Native.
   - Notifications
   - Material design + animations
 
-![Todo List](https://cloud.githubusercontent.com/assets/1134272/22454484/1fadb70c-e754-11e6-8128-b0274206234a.png)
+<img src="https://cloud.githubusercontent.com/assets/1134272/22454484/1fadb70c-e754-11e6-8128-b0274206234a.png" width="500">
 
-![Todo List](https://cloud.githubusercontent.com/assets/1134272/22454484/1fadb70c-e754-11e6-8128-b0274206234a.png | width=500)
-![Todo List](https://cloud.githubusercontent.com/assets/1134272/22454484/1fadb70c-e754-11e6-8128-b0274206234a.png =500x)
-![Todo List](https://cloud.githubusercontent.com/assets/1134272/22454484/1fadb70c-e754-11e6-8128-b0274206234a.png =500)
+<img src="https://cloud.githubusercontent.com/assets/1134272/22454508/4e11a2f2-e754-11e6-8277-f4641364ad44.png" width="500">
 
-![Add Item](https://cloud.githubusercontent.com/assets/1134272/22454508/4e11a2f2-e754-11e6-8277-f4641364ad44.png)
 
 #### Todo List:
 
