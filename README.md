@@ -7,9 +7,13 @@ Written in JavaScript using React Native.
   - Notifications
   - Material design + animations
 
-<img src="https://cloud.githubusercontent.com/assets/1134272/22454484/1fadb70c-e754-11e6-8128-b0274206234a.png" width="350">
+<img src="https://cloud.githubusercontent.com/assets/1134272/22454484/1fadb70c-e754-11e6-8128-b0274206234a.png" width="320">
 
-<img src="https://cloud.githubusercontent.com/assets/1134272/22454508/4e11a2f2-e754-11e6-8277-f4641364ad44.png" width="350">
+<img src="https://cloud.githubusercontent.com/assets/1134272/22454508/4e11a2f2-e754-11e6-8277-f4641364ad44.png" width="400">
+
+<img src="https://cloud.githubusercontent.com/assets/1134272/22454508/4e11a2f2-e754-11e6-8277-f4641364ad44.png" width="450">
+
+<img src="https://cloud.githubusercontent.com/assets/1134272/22454508/4e11a2f2-e754-11e6-8277-f4641364ad44.png" width="500">
 
 
 
