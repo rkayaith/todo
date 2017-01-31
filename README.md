@@ -1,22 +1,30 @@
-An Android todo list with automatic sorting based on the urgent-important matrix.
-Written in JavaScript with React Native.
+An Android organizational app implementing the [Eisenhower Method](https://en.wikipedia.org/wiki/Time_management#The_Eisenhower_Method).
 
+Written in JavaScript using React Native.
 
-TODO:
+#### Features:
+  - Automatically updates task priority
+  - Notifications
+  - Material design + animations
 
-	- check if performance has degraded
+![Todo List](https://cloud.githubusercontent.com/assets/1134272/22454484/1fadb70c-e754-11e6-8128-b0274206234a.png)
 
-	Features:
-		- countdown to urgent date in list
-		- undo button
+![Todo List](https://cloud.githubusercontent.com/assets/1134272/22454484/1fadb70c-e754-11e6-8128-b0274206234a.png | width=500)
+![Todo List](https://cloud.githubusercontent.com/assets/1134272/22454484/1fadb70c-e754-11e6-8128-b0274206234a.png =500x)
+![Todo List](https://cloud.githubusercontent.com/assets/1134272/22454484/1fadb70c-e754-11e6-8128-b0274206234a.png =500)
 
-	UX:
-		- add app icon
+![Add Item](https://cloud.githubusercontent.com/assets/1134272/22454508/4e11a2f2-e754-11e6-8277-f4641364ad44.png)
 
-		- improve icons in notifications
-		- improve text formatting in notifications (fork react-native-push-notification and use Html.fromHtml())
+#### Todo List:
 
-		- fix TouchableNativeFeedback bug where checking off an item that
-			moves as a result won't show release feedback
+  Features:
+  - countdown to urgent date in list
+  - undo button
+  - fix data upgrade system
 
-		- improve item check animation
+  UX:
+  - add app icon
+  - improve icons in notifications
+  - improve text formatting in notifications (fork `react-native-push-notification` and use `Html.fromHtml()`)
+  - fix `TouchableNativeFeedback` bug where checking off an item that then moves won't show release feedback
+  - improve item check animation
