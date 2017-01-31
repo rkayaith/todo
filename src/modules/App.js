@@ -13,11 +13,12 @@ import * as Notifications from './Notifications'
 export async function init() {
 
 	let info = JSON.parse(await Storage.get(Storage.STATE_KEY))
+	// TODO: upgrade is broken, fix it
 	// If there is no info (ie fresh install) don't call upgrade()
-	if (info) {
-		info = await upgrade(info)
-	}
-	return stateFromObj(info)
+	// if (info) {
+	// 	info = await upgrade(info)
+	// }
+	return stateFromObj(info || {})
 }
 
 
